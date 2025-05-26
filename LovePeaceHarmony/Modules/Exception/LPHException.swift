@@ -10,12 +10,17 @@ public class LPHException<E>: Error {
     
     private var applicationError: ApplicationError?
     private var controllerError: E?
-    var errorMessage: String = String()
-    var exceptionType: ExceptionType?
+    public var errorMessage: String = String()
+    public var exceptionType: ExceptionType?
     
     public enum ExceptionType: Int {
         case application
         case controller
+    }
+    
+    // Add public getter for controller error
+    public var error: E? {
+        return controllerError
     }
     
     init(applicationError: ApplicationError) {
@@ -43,12 +48,14 @@ public class LPHException<E>: Error {
         var errorMessage: String?
         switch controllerError {
         case is LoginError:
-            errorMessage = getLoginErrorMessage(loginError: controllerError as! LoginError)
+            if let loginError = controllerError as? LoginError {
+                errorMessage = loginError.localizedDescription
+            }
             break
         default:
             break
         }
-        return errorMessage!
+        return errorMessage ?? NSLocalizedString(AlertMessage.unKnownException, comment: "")
     }
     
     private func getApplicationErrorMessage() -> String {

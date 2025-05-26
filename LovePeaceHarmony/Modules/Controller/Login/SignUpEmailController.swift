@@ -16,30 +16,90 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
     var loginControllerCallback: LoginControllerCallback?
     var splashDelegate: SplashDelegate?
     
+    // MARK: - Colors
+    private struct Colors {
+        static let errorRed = UIColor.systemRed
+    }
+    
     // MARK: - IBOutlets
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var textFieldConfirmPassword: UITextField!
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var backLabel: UILabel!
     @IBOutlet weak var createAccountLabel: UILabel!
-    @IBOutlet weak var submitButton: UIButton!
-    @IBOutlet weak var submitLabel: UILabel!
+    @IBOutlet weak var submitButton: LPHActionButton! {
+        didSet {
+            submitButton.setTitle(NSLocalizedString("Create Account", comment: ""))
+        }
+    }
     
     // MARK: - View
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+    }
+    
+    private func setupUI() {
         textFieldEmail.delegate = self
         textFieldPassword.delegate = self
         textFieldConfirmPassword.delegate = self
         
-        //Set up UI labels for translation
+        setupTextFields()
+        configureErrorLabel()
+    }
+    
+    private func setupTextFields() {
         textFieldEmail.placeholder = NSLocalizedString("Email", comment: "")
         textFieldPassword.placeholder = NSLocalizedString("Password", comment: "")
-        textFieldConfirmPassword.placeholder = NSLocalizedString("Confirm Passowrd", comment: "")
+        textFieldConfirmPassword.placeholder = NSLocalizedString("Confirm Password", comment: "")
         backLabel.text = NSLocalizedString("Back", comment: "")
         createAccountLabel.text = NSLocalizedString("Create an Account", comment: "")
-        submitLabel.text = NSLocalizedString("Submit", comment: "")
-            
+        
+        textFieldEmail.autocorrectionType = .no
+        textFieldPassword.autocorrectionType = .no
+        textFieldConfirmPassword.autocorrectionType = .no
+        
+        textFieldPassword.isSecureTextEntry = true
+        textFieldConfirmPassword.isSecureTextEntry = true
+        
+        if #available(iOS 12.0, *) {
+            textFieldEmail.textContentType = .username
+            textFieldPassword.textContentType = .newPassword
+            textFieldConfirmPassword.textContentType = .newPassword
+        }
+    }
+    
+    private func configureErrorLabel() {
+        print("Configuring error label...")
+        errorLabel.textColor = Colors.errorRed
+        errorLabel.font = .preferredFont(forTextStyle: .footnote)
+        errorLabel.numberOfLines = 0
+        errorLabel.textAlignment = .center
+        errorLabel.adjustsFontForContentSizeCategory = true
+        errorLabel.backgroundColor = .clear
+        errorLabel.text = ""  // Initialize with empty string
+        errorLabel.isHidden = true  // Start hidden
+        errorLabel.alpha = 0  // Ensure alpha is 0 initially
+        
+        // Ensure proper sizing
+        errorLabel.setContentHuggingPriority(.required, for: .vertical)
+        errorLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        // Remove any existing constraints
+        errorLabel.removeFromSuperview()
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(errorLabel)
+        
+        // Add constraints to position between password field and submit button
+        NSLayoutConstraint.activate([
+            errorLabel.topAnchor.constraint(equalTo: textFieldConfirmPassword.bottomAnchor, constant: 8),
+            errorLabel.leadingAnchor.constraint(equalTo: textFieldConfirmPassword.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: textFieldConfirmPassword.trailingAnchor),
+            submitButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 16)
+        ])
+        
+        print("Error label frame after constraints: \(errorLabel.frame)")
     }
     
     // MARK: - XLPagerTabStrip
@@ -55,13 +115,14 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
             textFieldConfirmPassword.becomeFirstResponder()
         } else if textField == textFieldConfirmPassword {
             textField.resignFirstResponder()
+            submitPressed(submitButton)
         }
         return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//        let yValue = textField.layer.frame.maxY + 15
-//        animateViewMoving(true, moveValue: yValue)
+        // Schedule hide with a slight delay when editing begins
+        perform(#selector(hideError), with: nil, afterDelay: 0.1)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -75,19 +136,74 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
     }
     
     @IBAction func submitPressed(_ sender: Any) {
+        print("Submit pressed")
+        view.endEditing(true)
+        
+        // Don't hide error yet since we might need to show a new one
+        submitButton.showLoading(loadingText: NSLocalizedString("Creating Account...", comment: ""))
+        
         do {
             try validateForm()
         } catch let error as LPHException<LoginError> {
-            showToast(message: error.errorMessage)
+            print("Caught LPHException: \(error.errorMessage)")
+            DispatchQueue.main.async {
+                self.submitButton.showErrorState()
+                self.showError(error.errorMessage)
+            }
         } catch {
-            
+            print("Caught general error: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.submitButton.showErrorState()
+                self.showError(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - Error Handling
+    private func showError(_ message: String) {
+        print("Showing error: \(message)")
+        
+        // Cancel any pending hide animations
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(hideError), object: nil)
+        
+        // Update error label
+        errorLabel.text = message
+        errorLabel.isHidden = false
+        
+        // Force layout update
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        
+        print("Error label after update - frame: \(errorLabel.frame), isHidden: \(errorLabel.isHidden)")
+        
+        // Ensure visibility with animation
+        UIView.animate(withDuration: 0.3) {
+            self.errorLabel.alpha = 1
+        } completion: { finished in
+            print("Show animation completed: \(finished)")
+            print("Error label state - isHidden: \(self.errorLabel.isHidden), alpha: \(self.errorLabel.alpha)")
+        }
+    }
+    
+    @objc private func hideError() {
+        print("Hiding error")
+        guard !errorLabel.isHidden else { return }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.errorLabel.alpha = 0
+        } completion: { finished in
+            if finished {
+                self.errorLabel.isHidden = true
+                self.errorLabel.text = nil
+                print("Error hidden - isHidden: \(self.errorLabel.isHidden), alpha: \(self.errorLabel.alpha)")
+            }
         }
     }
     
     // MARK: - Actions
     private func validateForm() throws {
-        
-        guard let email = textFieldEmail.text, email != "" else {
+        guard let email = textFieldEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !email.isEmpty else {
             throw LPHException<LoginError>(controllerError: .emptyEmail)
         }
         
@@ -95,38 +211,75 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
             throw LPHException<LoginError>(controllerError: .invalidEmail)
         }
         
-        guard let passwordLength = textFieldPassword.text, passwordLength.count >= 6 else {
-            throw LPHException<LoginError>(controllerError: .passwordLength)
-        }
-        
-        guard let password = textFieldPassword.text, password != "" else {
+        guard let password = textFieldPassword.text,
+              !password.isEmpty else {
             throw LPHException<LoginError>(controllerError: .emptyPassword)
         }
         
-        guard let confirmPassword = textFieldConfirmPassword.text, confirmPassword != "" else {
+        guard password.count >= 6 else {
+            throw LPHException<LoginError>(controllerError: .passwordLength)
+        }
+        
+        guard let confirmPassword = textFieldConfirmPassword.text,
+              !confirmPassword.isEmpty else {
             throw LPHException<LoginError>(controllerError: .emptyConfirmPassword)
         }
         
-        if password != confirmPassword {
+        guard password == confirmPassword else {
             throw LPHException<LoginError>(controllerError: .passwordDoNotMatch)
         }
-      
-        Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("FCM registration token: \(token)")
-            self.fireSocialLoginRegisterApi(email: email, password: password, deviceId: token)
-          }
+        
+        // Create account first, then handle FCM token
+        Task {
+            do {
+                // Create Firebase user first
+                let result = try await Auth.auth().createUser(withEmail: email, password: password)
+                
+                // Try to get FCM token, but don't fail if it doesn't work
+                if let token = try? await Messaging.messaging().token() {
+                    // Token retrieved successfully, update it
+                    print("FCM token retrieved: \(token)")
+                } else {
+                    print("Failed to get FCM token, but continuing with account creation")
+                }
+                
+                await MainActor.run {
+                    // Process successful registration
+                    processLoginResponse(email: email, password: password)
+                    
+                    // Show success state and navigate
+                    submitButton.showSuccessState { [weak self] in
+                        self?.navigateToHome()
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    submitButton.showErrorState()
+                    
+                    let errorMessage: String
+                    if let errorCode = AuthErrorCode.errorCode(from: error) {
+                        switch errorCode {
+                        case .emailAlreadyInUse:
+                            errorMessage = NSLocalizedString("This email is already registered. Please try logging in.", comment: "")
+                        case .invalidEmail:
+                            errorMessage = NSLocalizedString("Invalid email format.", comment: "")
+                        case .weakPassword:
+                            errorMessage = NSLocalizedString("Password is too weak. Please use a stronger password.", comment: "")
+                        case .networkError:
+                            errorMessage = NSLocalizedString("Network error. Please check your connection.", comment: "")
+                        default:
+                            errorMessage = error.localizedDescription
+                        }
+                    } else {
+                        errorMessage = error.localizedDescription
+                    }
+                    
+                    showError(errorMessage)
+                }
+            }
         }
     }
     
-    func animateViewMoving (_ up:Bool, moveValue :CGFloat){
-        let movement:CGFloat = ( up ? -moveValue : moveValue)
-        loginControllerCallback?.moveScreen(dx: 0, dy: movement)
-    }
-    
-
     private func processLoginResponse(email: String, password: String) {
             let loginVo = LPHUtils.getLoginVo()
             loginVo.isLoggedIn = true
@@ -177,23 +330,11 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
     }
     
     private func fireUpdateTokenApi() {
-        self.showLoadingIndicator()
-        
-        Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("FCM registration token: \(token)")
-   
-            do {
-                self.hideLoadingIndicator()
-                self.splashDelegate?.isFromLoginEnable()
-                self.navigateToHome()
-            } catch let error {
-                self.hideLoadingIndicator()
-            }
-          }
-        }
+        // Since we already tried to get the token during account creation,
+        // we can proceed directly to navigation
+        self.hideLoadingIndicator()
+        self.splashDelegate?.isFromLoginEnable()
+        self.navigateToHome()
     }
     
     // MARK: - Navigation
