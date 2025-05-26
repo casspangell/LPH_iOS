@@ -18,21 +18,6 @@ class ProfileLoginController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupUI()
-    }
-    
-    private func setupUI() {
-        logoutButton.setTitle(NSLocalizedString("Logout", comment: ""), for: .normal)
-        lphMessengerLabel.text = NSLocalizedString("Love Peace Harmony Messenger", comment: "")
-        
-        // Configure delete account button
-        deleteAccountButton.setTitle(NSLocalizedString("Delete Account", comment: ""), for: .normal)
-        deleteAccountButton.setTitleColor(.systemRed, for: .normal)
-        deleteAccountButton.layer.borderColor = UIColor.systemRed.cgColor
-        deleteAccountButton.layer.borderWidth = 1.0
-        deleteAccountButton.layer.cornerRadius = 8.0
-        deleteAccountButton.accessibilityLabel = NSLocalizedString("Delete account button", comment: "")
     }
     
     @IBAction func deleteAccountPressed(_ sender: Any) {
@@ -43,7 +28,7 @@ class ProfileLoginController: BaseViewController {
         let alert = UIAlertController(
             title: NSLocalizedString("Delete Account?", comment: ""),
             message: NSLocalizedString(
-                "This action is permanent and cannot be undone. All your data will be deleted including:\n\n• Profile information\n• Settings\n• Progress data\n• Saved preferences\n\nAre you sure you want to continue?",
+                "This action is permanent and cannot be undone. All your data will be deleted including:\n\n• Milestone data\n• Saved preferences\n\nAre you sure you want to continue?",
                 comment: ""
             ),
             preferredStyle: .alert
