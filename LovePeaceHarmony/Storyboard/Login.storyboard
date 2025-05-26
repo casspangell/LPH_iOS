@@ -444,7 +444,6 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ho5-Ws-VPc" userLabel="Login">
                                                 <rect key="frame" x="4" y="9" width="327" height="32"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                <state key="normal" title="Login"/>
                                                 <connections>
                                                     <action selector="loginWithEmailPressed:" destination="lbk-4m-TCN" eventType="touchUpInside" id="ptC-GQ-dKY"/>
                                                 </connections>

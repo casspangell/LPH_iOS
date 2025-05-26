@@ -11,6 +11,14 @@ import UIKit
 import XLPagerTabStrip
 import Firebase
 import FirebaseAuth
+import Alamofire
+
+// Add the error code extension at the top level
+extension AuthErrorCode {
+    static func errorCode(from error: Error) -> AuthErrorCode? {
+        return AuthErrorCode(rawValue: (error as NSError).code)
+    }
+}
 
 class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, UITextFieldDelegate {
     
@@ -19,6 +27,7 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     var loginControllerCallback: LoginControllerCallback?
     var splashDelegate: SplashDelegate?
     var loginEngine: SocialLoginEngine?
+    private var errorLabel: UILabel!
     
     // MARK: - Colors
     private struct Colors {
@@ -71,6 +80,18 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         }
     }
     
+    @IBOutlet private weak var forgotPasswordButton: UIButton! {
+        didSet {
+            configureForgotPasswordButton()
+        }
+    }
+    
+    // MARK: - Properties
+    private let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    private let emailPredicate: NSPredicate = {
+        NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,12 +114,31 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         loginEngine = SocialLoginEngine(self)
         view.backgroundColor = .systemBackground
         
+        setupErrorLabel()
+        
         if #available(iOS 15.0, *) {
             // Use modern appearance customization
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
+    }
+    
+    private func setupErrorLabel() {
+        errorLabel = UILabel()
+        errorLabel.textColor = .systemRed
+        errorLabel.font = .preferredFont(forTextStyle: .footnote)
+        errorLabel.numberOfLines = 0
+        errorLabel.textAlignment = .left
+        errorLabel.isHidden = true
+        errorLabel.adjustsFontForContentSizeCategory = true
+        
+        // Insert error label into stack view after password field
+        if let passwordIndex = stackView.arrangedSubviews.firstIndex(of: passwordTextField) {
+            stackView.insertArrangedSubview(errorLabel, at: passwordIndex + 1)
+            stackView.setCustomSpacing(8, after: passwordTextField)
+            stackView.setCustomSpacing(16, after: errorLabel)
         }
     }
     
@@ -152,6 +192,15 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         noAccountButton.configuration = config
     }
     
+    private func configureForgotPasswordButton() {
+        var config = UIButton.Configuration.plain()
+        config.title = NSLocalizedString("Forgot Password?", comment: "")
+        config.baseForegroundColor = Colors.purpleLight
+        
+        forgotPasswordButton.configuration = config
+        forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+    }
+    
     // MARK: - Authentication
     private func setupAuthStateListener() {
         authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
@@ -170,7 +219,7 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     
     // MARK: - UITextFieldDelegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Handle text field focus if needed
+        clearErrorState()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -230,11 +279,15 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         loginButton.configuration = updatedConfig
         loginButton.isEnabled = false
         
+        // Hide any previous error
+        errorLabel.isHidden = true
+        
         guard let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
               !email.isEmpty,
               let password = passwordTextField.text,
               !password.isEmpty else {
-            showToast(message: NSLocalizedString("Email/password can't be empty", comment: ""))
+            errorLabel.text = NSLocalizedString("Email and password are required", comment: "")
+            errorLabel.isHidden = false
             loginButton.configuration = originalConfig
             loginButton.isEnabled = true
             return
@@ -266,7 +319,31 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
                     updatedConfig?.baseForegroundColor = .white
                     loginButton.configuration = updatedConfig
                     
-                    showToast(message: error.localizedDescription)
+                    // Display error in the error label
+                    let errorMessage: String
+                    
+                    if let errorCode = AuthErrorCode.errorCode(from: error) {
+                        switch errorCode {
+                        case .wrongPassword:
+                            errorMessage = NSLocalizedString("Incorrect password. Please try again.", comment: "")
+                        case .invalidEmail:
+                            errorMessage = NSLocalizedString("Invalid email format.", comment: "")
+                        case .userNotFound:
+                            errorMessage = NSLocalizedString("No account found with this email.", comment: "")
+                        case .networkError:
+                            errorMessage = NSLocalizedString("Network error. Please check your connection.", comment: "")
+                        case .tooManyRequests:
+                            errorMessage = NSLocalizedString("Too many attempts. Please try again later.", comment: "")
+                        default:
+                            errorMessage = error.localizedDescription
+                        }
+                    } else {
+                        errorMessage = error.localizedDescription
+                    }
+                    
+                    self.errorLabel.text = errorMessage
+                    self.errorLabel.isHidden = false
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         self.loginButton.configuration = originalConfig
                         self.loginButton.isEnabled = true
@@ -298,6 +375,131 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     // MARK: - XLPagerTabStrip
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return IndicatorInfo(title: "Title")
+    }
+    
+    // MARK: - Forgot Password
+    @objc private func forgotPasswordTapped() {
+        let alert = UIAlertController(
+            title: NSLocalizedString("Reset Password", comment: ""),
+            message: NSLocalizedString("Enter your email address and we'll send you a link to reset your password.", comment: ""),
+            preferredStyle: .alert
+        )
+        
+        alert.addTextField { textField in
+            textField.placeholder = NSLocalizedString("Email", comment: "")
+            textField.keyboardType = .emailAddress
+            textField.autocapitalizationType = .none
+            textField.clearButtonMode = .whileEditing
+            if let email = self.emailTextField.text, !email.isEmpty {
+                textField.text = email
+            }
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: ""),
+            style: .cancel
+        )
+        
+        let resetAction = UIAlertAction(
+            title: NSLocalizedString("Reset Password", comment: ""),
+            style: .default
+        ) { [weak self] _ in
+            guard let self = self,
+                  let email = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+            else { return }
+            
+            self.handlePasswordReset(email: email)
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(resetAction)
+        present(alert, animated: true)
+    }
+    
+    private func handlePasswordReset(email: String) {
+        // Validate email format
+        guard isValidEmail(email) else {
+            showToast(message: NSLocalizedString("Please enter a valid email address", comment: ""))
+            return
+        }
+        
+        // Check network connectivity
+        guard Reachability.isConnectedToNetwork() else {
+            showToast(message: NSLocalizedString("No internet connection. Please check your network settings.", comment: ""))
+            return
+        }
+        
+        showLoadingIndicator()
+        
+        Task {
+            do {
+                try await Auth.auth().sendPasswordReset(withEmail: email)
+                await MainActor.run {
+                    hideLoadingIndicator()
+                    showSuccessAlert()
+                }
+            } catch {
+                await MainActor.run {
+                    hideLoadingIndicator()
+                    handleResetError(error)
+                }
+            }
+        }
+    }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        return emailPredicate.evaluate(with: email)
+    }
+    
+    private func showSuccessAlert() {
+        let alert = UIAlertController(
+            title: NSLocalizedString("Check Your Email", comment: ""),
+            message: NSLocalizedString("We've sent you an email with instructions to reset your password.", comment: ""),
+            preferredStyle: .alert
+        )
+        
+        let okAction = UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .default
+        )
+        
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
+    
+    private func handleResetError(_ error: Error) {
+        var errorMessage = NSLocalizedString("Failed to send reset email. Please try again.", comment: "")
+        
+        if let errorCode = AuthErrorCode.errorCode(from: error) {
+            switch errorCode {
+            case .invalidEmail:
+                errorMessage = NSLocalizedString("The email address is invalid.", comment: "")
+            case .userNotFound:
+                errorMessage = NSLocalizedString("No account exists with this email address.", comment: "")
+            case .networkError:
+                errorMessage = NSLocalizedString("Network error. Please check your connection and try again.", comment: "")
+            case .tooManyRequests:
+                errorMessage = NSLocalizedString("Too many attempts. Please try again later.", comment: "")
+            default:
+                errorMessage = error.localizedDescription
+            }
+        }
+        
+        showToast(message: errorMessage)
+    }
+    
+    // MARK: - Reachability
+    private struct Reachability {
+        static func isConnectedToNetwork() -> Bool {
+            guard let network = NetworkReachabilityManager() else { return false }
+            return network.isReachable
+        }
+    }
+    
+    // Add helper method to clear error state
+    private func clearErrorState() {
+        errorLabel.isHidden = true
+        errorLabel.text = nil
     }
 }
 
