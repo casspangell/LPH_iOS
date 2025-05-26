@@ -480,18 +480,24 @@
                                             <constraint firstAttribute="height" constant="5" id="GDV-Ro-Tkl"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LTx-z4-oRS">
+                                        <rect key="frame" x="0.0" y="205" width="335" height="34.5"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Forgot Password?"/>
+                                        <buttonConfiguration key="configuration" style="tinted" title="Forgot Password?"/>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rm8-P4-KFc" userLabel="Spacer">
-                                        <rect key="frame" x="0.0" y="205" width="335" height="5"/>
+                                        <rect key="frame" x="0.0" y="239.5" width="335" height="5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="5" id="uVo-FF-Pwr"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXm-vt-VvC" userLabel="Need Account" customClass="RoundedCornerView" customModule="LovePeaceHarmony" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="210" width="335" height="150"/>
+                                        <rect key="frame" x="0.0" y="244.5" width="335" height="115.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKR-iC-5Ry">
-                                                <rect key="frame" x="5" y="62" width="325" height="26"/>
+                                                <rect key="frame" x="5" y="45" width="325" height="26"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                 <state key="normal">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -501,7 +507,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account? Sign Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HZZ-Bk-bYc">
-                                                <rect key="frame" x="5" y="62" width="325" height="26"/>
+                                                <rect key="frame" x="5" y="45" width="325" height="26"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -552,6 +558,7 @@
                     <size key="freeformSize" width="375" height="400"/>
                     <connections>
                         <outlet property="emailTextField" destination="NKQ-su-kpJ" id="Bfy-Tc-eaz"/>
+                        <outlet property="forgotPasswordButton" destination="LTx-z4-oRS" id="xSN-yz-9n2"/>
                         <outlet property="loginButton" destination="ho5-Ws-VPc" id="ejp-O5-2rT"/>
                         <outlet property="noAccountButton" destination="vKR-iC-5Ry" id="fHO-hU-IWh"/>
                         <outlet property="noAccountLabel" destination="HZZ-Bk-bYc" id="qch-7s-Nna"/>
@@ -561,7 +568,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tXs-Gf-svp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1007" y="739"/>
+            <point key="canvasLocation" x="-1007.2" y="738.53073463268368"/>
         </scene>
         <!--Login Email Controller-->
         <scene sceneID="mXO-m6-OgP">
