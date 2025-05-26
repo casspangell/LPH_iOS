@@ -10,30 +10,19 @@
 import UIKit
 import XLPagerTabStrip
 import Firebase
-import FBSDKLoginKit
-import GoogleSignIn
 import FirebaseAuth
 import AuthenticationServices
 
 
-class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, UITextFieldDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-
-    /** @var handle
-        @brief The handler for the auth state listener, to allow cancelling later.
-     */
-    var handle: AuthStateDidChangeListenerHandle?
-
+class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, UITextFieldDelegate {
+    
     // MARK: - Variables
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
     var loginControllerCallback: LoginControllerCallback?
     var splashDelegate: SplashDelegate?
     var loginEngine: SocialLoginEngine?
     
     // MARK: - IBOutets
-    
-    @IBOutlet weak var googleLoginButton: UIButton!
-    @IBOutlet weak var facebookLoginButton: UIButton!
-    @IBOutlet weak var appleLoginButton: UIButton!
-    @IBOutlet weak var appleLoginContainer: RoundedCornerView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -41,159 +30,141 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     @IBOutlet weak var noAccountButton: UIButton!
     @IBOutlet weak var noAccountLabel: UILabel!
     
-    // MARK: - View
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        setupUI()
+        configureTextFields()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAuthStateListener()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeAuthStateListener()
+    }
+    
+    // MARK: - Setup
+    private func setupUI() {
         loginEngine = SocialLoginEngine(self)
         
         //Set up UI labels for translation
-        appleLoginButton.setTitle(NSLocalizedString("Connect with Apple", comment: ""), for: .normal)
-        googleLoginButton.setTitle(NSLocalizedString("Connect with Google", comment: ""), for: .normal)
-        facebookLoginButton.setTitle(NSLocalizedString("Connect with Facebook", comment: ""), for: .normal)
+        loginButton.configuration = .filled()
         loginButton.setTitle(NSLocalizedString("Login", comment: ""), for: .normal)
-
+        
         emailTextField.placeholder = NSLocalizedString("Email", comment: "")
         passwordTextField.placeholder = NSLocalizedString("Password", comment: "")
         noAccountLabel.text = NSLocalizedString("Don't have an account? Sign Up", comment: "")
         
-//        emailTextField.delegate = self
-//        passwordTextField.delegate = self
+        if #available(iOS 15.0, *) {
+            emailTextField.clearButtonMode = .whileEditing
+            passwordTextField.clearButtonMode = .whileEditing
+        }
+    }
+    
+    private func configureTextFields() {
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
         
-//        setupAppleButton()
-
+        if #available(iOS 15.0, *) {
+            emailTextField.textContentType = .emailAddress
+            passwordTextField.textContentType = .password
+        }
+        
+        passwordTextField.isSecureTextEntry = true
     }
     
-   
-    
-    override func viewWillAppear(_ animated: Bool) {
-      super.viewWillAppear(animated)
+    private func setupAuthStateListener() {
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            guard let self = self else { return }
+            if let user = user {
+                // User is signed in
+                print("User is signed in with ID: \(user.uid)")
+            }
+        }
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-      super.viewWillDisappear(animated)
+    
+    private func removeAuthStateListener() {
+        if let handle = authStateHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
     }
     
-    
+    // MARK: - UITextFieldDelegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("editing begin")
+        // Handle text field focus if needed
     }
-
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        print("editing end")
-        return false
-    }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-      textField.resignFirstResponder()
-
+        textField.resignFirstResponder()
         return true
     }
     
-//    func setupAppleButton() {
-//        let authorizationButton = ASAuthorizationAppleIDButton()
-//        authorizationButton.addTarget(self, action: #selector(appleLoginPressed(_:)), for: .touchUpInside)
-//        authorizationButton.frame.size.width = appleLoginContainer.frame.size.width
-//        authorizationButton.frame.size.height = appleLoginContainer.frame.size.height
-//        appleLoginContainer.addSubview(authorizationButton)
-//    }
-
+    // MARK: - Actions
     @IBAction func loginWithEmailPressed(_ sender: Any) {
-        guard let email = self.emailTextField.text, let password = self.passwordTextField.text else {
-            self.showToast(message: NSLocalizedString("email/password can't be empty", comment: ""))
-              return
-            }
+        guard let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !email.isEmpty,
+              let password = passwordTextField.text,
+              !password.isEmpty else {
+            showToast(message: NSLocalizedString("Email/password can't be empty", comment: ""))
+            return
+        }
         
-        self.showLoadingIndicator()
-           
-      //Firebase Email Login
-      Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-
-        self?.hideLoadingIndicator()
-
-          if let error = error {
-            let authError = error as NSError
-            self?.showToast(message: error.localizedDescription)
-          } else {
-            //Login success
-            self!.navigateToHome()
-          }
+        showLoadingIndicator()
+        
+        Task {
+            do {
+                let result = try await Auth.auth().signIn(withEmail: email, password: password)
+                hideLoadingIndicator()
+                navigateToHome()
+            } catch {
+                hideLoadingIndicator()
+                showToast(message: error.localizedDescription)
+            }
         }
-            
-    }
-    
-    @IBAction func appleLoginPressed(_ sender: Any) {
-//        if LPHUtils.checkNetworkConnection() {
-//            initiateLogin(type: .apple)
-//        } else {
-//            showToast(message: NSLocalizedString("Please check your internet connection", comment: ""))
-//        }
-//
-        if #available(iOS 13.0, *) {
-            let appleIDProvider = ASAuthorizationAppleIDProvider()
-            let request = appleIDProvider.createRequest()
-            request.requestedScopes = [.fullName, .email]
-            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-            authorizationController.delegate = self
-            authorizationController.presentationContextProvider = self
-            authorizationController.performRequests()
-        }
-    }
-    
-    @IBAction func facebookLoginPressed(_ sender: Any) {
-        if LPHUtils.checkNetworkConnection() {
-            initiateLogin(type: .facebook)
-        } else {
-            showToast(message: NSLocalizedString("Please check your internet connection", comment: ""))
-        }
-    }
-    
-    @IBAction func googleLoginPressed(_ sender: Any) {
-        if LPHUtils.checkNetworkConnection() {
-            initiateLogin(type: .google)
-        } else {
-            showToast(message: NSLocalizedString("Please check your internet connection", comment: ""))
-        }
+        
     }
     
     @IBAction func signUpPressed(_ sender: Any) {
-        loginControllerCallback?.changeTab(index: 2)
+        // Get the current number of tabs from the parent controller
+        if let loginController = parent as? LoginController {
+            let targetIndex = loginController.viewControllerList.count - 1
+            loginControllerCallback?.changeTab(index: targetIndex)
+        } else {
+            // Fallback to the last tab
+            loginControllerCallback?.changeTab(index: 1)
+        }
     }
-    
     
     // MARK: - XLPagerTabStrip
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return IndicatorInfo(title: "Title")
     }
     
+    // MARK: - Login Processing
     private func initiateLogin(type: LoginType) {
-        var firebaseDeviceToken = String()
-        
-        Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("FCM registration token: \(token)")
-            firebaseDeviceToken = token
-          }
-        }
-        
-
-        do {
-            try loginEngine?.initiateLogin(type) { (lphResponse) in
-                if lphResponse.isSuccess() {
-                    
-                    let loginVo = lphResponse.getResult()
-                    self.processLoginResponse(source: type, password: loginVo.password, token: firebaseDeviceToken)
-                    
-                } else {
-
+        Task {
+            do {
+                let token = try await Messaging.messaging().token()
+                
+                do {
+                    try loginEngine?.initiateLogin(type) { [weak self] (lphResponse) in
+                        guard let self = self else { return }
+                        if lphResponse.isSuccess() {
+                            let loginVo = lphResponse.getResult()
+                            self.processLoginResponse(source: type, password: loginVo.password, token: token)
+                        }
+                    }
+                } catch let exception as LPHException<LoginError> {
+                    // Handle exception
                 }
+            } catch {
+                print("Error fetching FCM token: \(error)")
             }
-        } catch let exception as LPHException<LoginError> {
-
-        } catch {
-
         }
     }
     
@@ -227,58 +198,7 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
             
 //            LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.isFirstRun, value: 1)
         }
-        
-        //Firebase Handling after user logs in with Facebook or Google
-        switch loginType {
-        case .apple:
-            print("apple")
-            break
-        case .facebook:
-            let credential = FacebookAuthProvider
-                  .credential(withAccessToken: AccessToken.current!.tokenString)
-
-            Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
-                  let _ = error as NSError
-                    self.showToast(message: error.localizedDescription)
-                    print(error.localizedDescription)
-                    return
-                  }
-
-                //Login Success
-                self.navigateToHome()
-                  return
-                }
-            break
-
-        case .google:
-            let idToken = LPHUtils.getUserDefaultsString(key: UserDefaults.Keys.googleToken)
-            let authToken = LPHUtils.getUserDefaultsString(key: UserDefaults.Keys.googleAuth)
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authToken)
-            
-            Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
-                  let _ = error as NSError
-                    self.showToast(message: error.localizedDescription)
-                    return
-                  }
-
-                //Login Success
-                self.navigateToHome()
-                  return
-                }
-            
-            break
-        case .withoutLogin:
-            break
-        case .none:
-            break
-        case .email:
-            break
-        }//end switch
-    
-        
-}
+    }
     
     // MARK: - Navigation
     private func navigateToHome() {
@@ -288,22 +208,6 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         navVC.setNavigationBarHidden(true, animated: false)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true, completion: nil)
-    }
-    
-    // MARK: - Apis
-    private func fireSocialLoginRegisterApi(email: String,password: String, name: String, profilePic: String, source: LoginType, deviceId: String) {
-//        showLoadingIndicator()
-//        do {
-//            let lphService: LPHService = try LPHServiceFactory<LoginError>.getLPHService()
-//            lphService.fireLoginRegister(email: email, password: password, name: name, profilePicUrl: profilePic, source: source, deviceId: deviceId) { (lphResponse) in
-//                if lphResponse.isSuccess() {
-//                    self.processLoginResponse(source: source, password: password, serverResponse: lphResponse)
-//                }
-//                self.hideLoadingIndicator()
-//            }
-//        } catch let error {
-//            print(error.localizedDescription)
-//        }
     }
     
     private func fireUpdateTokenApi() {
@@ -335,39 +239,56 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     
 }
 
-
-extension LoginSocialNetworkController {
-
-    // Authorization Failed
-    @available(iOS 13.0, *)
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print(error.localizedDescription)
+// MARK: - Apple Sign In Extension
+@available(iOS 13.0, *)
+extension LoginSocialNetworkController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    
+    func handleAppleSignIn() {
+        let provider = ASAuthorizationAppleIDProvider()
+        let request = provider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
     }
-
-    // Authorization Succeeded
-    @available(iOS 13.0, *)
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            // Get user data with Apple ID credentitial
             let userId = appleIDCredential.user
             let userFirstName = appleIDCredential.fullName?.givenName
             let userLastName = appleIDCredential.fullName?.familyName
             let userEmail = appleIDCredential.email
-            print("User ID: \(userId)")
-            print("User First Name: \(userFirstName ?? "")")
-            print("User Last Name: \(userLastName ?? "")")
-            print("User Email: \(userEmail ?? "")")
-            // Write your code here
-        } else if let passwordCredential = authorization.credential as? ASPasswordCredential {
-            // Get user data using an existing iCloud Keychain credential
-            let appleUsername = passwordCredential.user
-            let applePassword = passwordCredential.password
-            // Write your code here
+            
+            // Create Firebase credential
+            if let identityToken = appleIDCredential.identityToken,
+               let tokenString = String(data: identityToken, encoding: .utf8) {
+                
+                let credential = OAuthProvider.credential(
+                    withProviderID: "apple.com",
+                    idToken: tokenString,
+                    rawNonce: nil
+                )
+                
+                // Sign in with Firebase
+                Task {
+                    do {
+                        let result = try await Auth.auth().signIn(with: credential)
+                        navigateToHome()
+                    } catch {
+                        showToast(message: error.localizedDescription)
+                    }
+                }
+            }
         }
     }
-
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        showToast(message: error.localizedDescription)
     }
-
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return view.window!
+    }
 }

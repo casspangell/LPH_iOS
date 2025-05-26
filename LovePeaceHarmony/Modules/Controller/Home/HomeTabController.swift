@@ -16,16 +16,35 @@ class HomeTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let items = homeTabController.items
-        let chantItem = items![0]
-        let aboutItem = items![1]
-        let newsItem = items![2]
-        let logoutItem = items![3]
+        guard let items = homeTabController.items,
+              items.count >= 3 else {
+            print("Error: Not enough tab bar items configured")
+            return
+        }
         
-        chantItem.title = NSLocalizedString("Chant", comment: "")
-        aboutItem.title = NSLocalizedString("About", comment: "")
-        newsItem.title = NSLocalizedString("News", comment: "")
-        logoutItem.title = NSLocalizedString("Logout", comment: "")
+        // Configure available tabs
+        if let chantItem = items[safe: 0] {
+            chantItem.title = NSLocalizedString("Chant", comment: "")
+        }
         
+        if let aboutItem = items[safe: 1] {
+            aboutItem.title = NSLocalizedString("About", comment: "")
+        }
+        
+        if let newsItem = items[safe: 2] {
+            newsItem.title = NSLocalizedString("News", comment: "")
+        }
+        
+        // Only set logout if we have a fourth tab
+        if let logoutItem = items[safe: 3] {
+            logoutItem.title = NSLocalizedString("Logout", comment: "")
+        }
+    }
+}
+
+// MARK: - Safe Array Access
+extension Array {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }
