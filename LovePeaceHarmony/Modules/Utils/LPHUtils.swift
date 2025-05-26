@@ -183,6 +183,25 @@ public class LPHUtils {
         userDefaults.synchronize()
     }
     
+    static func clearLoginData() {
+        // Reset login state
+        let defaultLoginVo = LoginVo.getDefaultObject()
+        setLoginVo(loginVo: defaultLoginVo)
+        
+        // Clear user defaults
+        let userDefaults = UserDefaults.standard
+        userDefaults.removeObject(forKey: UserDefaults.Keys.loginVo)
+        
+        // Clear any user-specific settings
+        let currentUser = Auth.auth().currentUser?.uid ?? ""
+        userDefaults.removeObject(forKey: "\(currentUser):\(UserDefaults.Keys.chantCurrentStreak)")
+        userDefaults.removeObject(forKey: "\(currentUser):\(UserDefaults.Keys.chantLongestStreak)")
+        userDefaults.removeObject(forKey: "\(currentUser):\(UserDefaults.Keys.chantTimestamp)")
+        
+        // Synchronize changes
+        userDefaults.synchronize()
+    }
+    
 //    static func getSecondsInString(seconds: Float) -> String {
 //        let dateFormatter = DateFormatter()
 //        dateFormatter.dateFormat = DatePattern.sql

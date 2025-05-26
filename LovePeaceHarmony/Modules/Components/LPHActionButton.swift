@@ -40,6 +40,9 @@ public final class LPHActionButton: UIButton {
         config.baseForegroundColor = .white
         config.cornerStyle = .medium
         
+        // Add padding between spinner and text
+        config.imagePadding = 8
+        
         // Save original configuration
         originalConfiguration = config
         configuration = config
