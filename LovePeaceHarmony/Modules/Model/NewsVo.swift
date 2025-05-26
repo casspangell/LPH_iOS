@@ -2,8 +2,8 @@
 //  NewsVo.swift
 //  LovePeaceHarmony
 //
-//  Created by Aghil C M on 08/11/17.
-//  Copyright © 2017 LovePeaceHarmony. All rights reserved.
+//  Created by Aghil C M on 29/11/17.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 public struct NewsVo {

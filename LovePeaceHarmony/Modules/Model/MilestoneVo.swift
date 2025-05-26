@@ -4,7 +4,7 @@
 //
 //  Created by Aghil C M on 15/01/18.
 //  Updated by Cass Pangell on 1/13/21.
-//  Copyright © 2021 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 public struct Milestones: Codable {

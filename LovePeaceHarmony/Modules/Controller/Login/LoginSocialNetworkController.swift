@@ -4,15 +4,13 @@
 //
 //  Created by Aghil C M on 29/11/17.
 //  Last Updated by Cass Pangell on 08/22/21.
-//  Copyright © 2020 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 import UIKit
 import XLPagerTabStrip
 import Firebase
 import FirebaseAuth
-import AuthenticationServices
-
 
 class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, UITextFieldDelegate {
     
@@ -22,25 +20,67 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     var splashDelegate: SplashDelegate?
     var loginEngine: SocialLoginEngine?
     
-    // MARK: - IBOutets
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var noAccountButton: UIButton!
-    @IBOutlet weak var noAccountLabel: UILabel!
+    // MARK: - Colors
+    private struct Colors {
+        static let purpleDark = UIColor(red: 102/255, green: 45/255, blue: 145/255, alpha: 1.0)
+        static let purpleLight = UIColor(red: 116/255, green: 110/255, blue: 175/255, alpha: 1.0)
+    }
     
-    // MARK: - View Lifecycle
+    // MARK: - IBOutlets
+    @IBOutlet private weak var stackView: UIStackView! {
+        didSet {
+            stackView.setCustomSpacing(20, after: emailTextField)
+            stackView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            stackView.isLayoutMarginsRelativeArrangement = true
+        }
+    }
+    
+    @IBOutlet private weak var emailTextField: UITextField! {
+        didSet {
+            configureTextField(emailTextField, 
+                             placeholder: NSLocalizedString("Email", comment: ""),
+                             contentType: .emailAddress)
+        }
+    }
+    
+    @IBOutlet private weak var passwordTextField: UITextField! {
+        didSet {
+            configureTextField(passwordTextField, 
+                             placeholder: NSLocalizedString("Password", comment: ""),
+                             contentType: .password,
+                             isSecure: true)
+        }
+    }
+    
+    @IBOutlet private weak var loginButton: UIButton! {
+        didSet {
+            configureLoginButton()
+        }
+    }
+    
+    @IBOutlet private weak var noAccountButton: UIButton! {
+        didSet {
+            configureSignUpButton()
+        }
+    }
+    
+    @IBOutlet private weak var noAccountLabel: UILabel! {
+        didSet {
+            noAccountLabel.text = NSLocalizedString("Don't have an account? Sign Up", comment: "")
+            noAccountLabel.adjustsFontForContentSizeCategory = true
+        }
+    }
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
-        configureTextFields()
+        setupAuthStateListener()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupAuthStateListener()
+        configureNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,42 +88,76 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         removeAuthStateListener()
     }
     
-    // MARK: - Setup
+    // MARK: - UI Configuration
     private func setupUI() {
         loginEngine = SocialLoginEngine(self)
-        
-        //Set up UI labels for translation
-        loginButton.configuration = .filled()
-        loginButton.setTitle(NSLocalizedString("Login", comment: ""), for: .normal)
-        
-        emailTextField.placeholder = NSLocalizedString("Email", comment: "")
-        passwordTextField.placeholder = NSLocalizedString("Password", comment: "")
-        noAccountLabel.text = NSLocalizedString("Don't have an account? Sign Up", comment: "")
+        view.backgroundColor = .systemBackground
         
         if #available(iOS 15.0, *) {
-            emailTextField.clearButtonMode = .whileEditing
-            passwordTextField.clearButtonMode = .whileEditing
+            // Use modern appearance customization
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
     }
     
-    private func configureTextFields() {
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        
-        if #available(iOS 15.0, *) {
-            emailTextField.textContentType = .emailAddress
-            passwordTextField.textContentType = .password
-        }
-        
-        passwordTextField.isSecureTextEntry = true
+    private func configureNavigationBar() {
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    private func configureTextField(_ textField: UITextField, placeholder: String, contentType: UITextContentType, isSecure: Bool = false) {
+        textField.delegate = self
+        textField.placeholder = placeholder
+        textField.textContentType = contentType
+        textField.borderStyle = .roundedRect
+        textField.backgroundColor = .secondarySystemBackground
+        textField.clearButtonMode = .whileEditing
+        textField.isSecureTextEntry = isSecure
+
+    }
+    
+    private func configureLoginButton() {
+        var config = UIButton.Configuration.filled()
+        config.title = NSLocalizedString("Login", comment: "")
+        config.cornerStyle = .large
+        config.buttonSize = .large
+        config.baseBackgroundColor = Colors.purpleDark
+        config.baseForegroundColor = .white
+        
+        loginButton.layer.shadowColor = UIColor.black.cgColor
+        loginButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        loginButton.layer.shadowRadius = 4
+        loginButton.layer.shadowOpacity = 0.1
+        
+        let touchDown = UILongPressGestureRecognizer(target: self, action: #selector(loginButtonTouchDown(_:)))
+        touchDown.minimumPressDuration = 0
+        loginButton.addGestureRecognizer(touchDown)
+        
+        loginButton.addTarget(self, action: #selector(loginWithEmailPressed(_:)), for: .touchUpInside)
+        
+        loginButton.configuration = config
+    }
+    
+    private func configureSignUpButton() {
+        var config = UIButton.Configuration.plain()
+        config.buttonSize = .medium
+        
+        if #available(iOS 15.0, *) {
+            config.baseBackgroundColor = .clear
+            config.baseForegroundColor = .secondaryLabel
+        }
+        
+        noAccountButton.configuration = config
+    }
+    
+    // MARK: - Authentication
     private func setupAuthStateListener() {
         authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             guard let self = self else { return }
             if let user = user {
-                // User is signed in
-                print("User is signed in with ID: \(user.uid)")
+                print("👤 User successfully logged in - ID: \(user.uid)")
             }
         }
     }
@@ -100,17 +174,69 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField == emailTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
         return true
+    }
+    
+    // MARK: - Button Interaction
+    @objc private func loginButtonTouchDown(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            animateButtonDown()
+        case .ended:
+            animateButtonUp()
+            if let button = gesture.view as? UIButton,
+               let touch = gesture.location(in: button) as CGPoint?,
+               button.bounds.contains(touch) {
+                loginWithEmailPressed(button)
+            }
+        case .cancelled:
+            animateButtonUp()
+        default:
+            break
+        }
+    }
+    
+    private func animateButtonDown() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseInOut], animations: {
+            self.loginButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            self.loginButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+            self.loginButton.layer.shadowRadius = 2
+            self.loginButton.configuration?.baseBackgroundColor = Colors.purpleLight
+        })
+    }
+    
+    private func animateButtonUp() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseInOut], animations: {
+            self.loginButton.transform = .identity
+            self.loginButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+            self.loginButton.layer.shadowRadius = 4
+            self.loginButton.configuration?.baseBackgroundColor = Colors.purpleDark
+        })
     }
     
     // MARK: - Actions
     @IBAction func loginWithEmailPressed(_ sender: Any) {
+        let originalConfig = loginButton.configuration
+        var updatedConfig = loginButton.configuration
+        updatedConfig?.showsActivityIndicator = true
+        updatedConfig?.title = NSLocalizedString("Logging in...", comment: "")
+        updatedConfig?.baseBackgroundColor = Colors.purpleDark
+        updatedConfig?.baseForegroundColor = .white
+        loginButton.configuration = updatedConfig
+        loginButton.isEnabled = false
+        
         guard let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
               !email.isEmpty,
               let password = passwordTextField.text,
               !password.isEmpty else {
             showToast(message: NSLocalizedString("Email/password can't be empty", comment: ""))
+            loginButton.configuration = originalConfig
+            loginButton.isEnabled = true
             return
         }
         
@@ -119,84 +245,43 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         Task {
             do {
                 let result = try await Auth.auth().signIn(withEmail: email, password: password)
-                hideLoadingIndicator()
-                navigateToHome()
+                await MainActor.run {
+                    hideLoadingIndicator()
+                    updatedConfig?.showsActivityIndicator = false
+                    updatedConfig?.title = "✓"
+                    updatedConfig?.baseBackgroundColor = Colors.purpleLight
+                    updatedConfig?.baseForegroundColor = .white
+                    loginButton.configuration = updatedConfig
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.navigateToHome()
+                    }
+                }
             } catch {
-                hideLoadingIndicator()
-                showToast(message: error.localizedDescription)
+                await MainActor.run {
+                    hideLoadingIndicator()
+                    updatedConfig?.showsActivityIndicator = false
+                    updatedConfig?.title = "!"
+                    updatedConfig?.baseBackgroundColor = Colors.purpleDark
+                    updatedConfig?.baseForegroundColor = .white
+                    loginButton.configuration = updatedConfig
+                    
+                    showToast(message: error.localizedDescription)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.loginButton.configuration = originalConfig
+                        self.loginButton.isEnabled = true
+                    }
+                }
             }
         }
-        
     }
     
     @IBAction func signUpPressed(_ sender: Any) {
-        // Get the current number of tabs from the parent controller
         if let loginController = parent as? LoginController {
             let targetIndex = loginController.viewControllerList.count - 1
             loginControllerCallback?.changeTab(index: targetIndex)
         } else {
-            // Fallback to the last tab
             loginControllerCallback?.changeTab(index: 1)
-        }
-    }
-    
-    // MARK: - XLPagerTabStrip
-    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
-        return IndicatorInfo(title: "Title")
-    }
-    
-    // MARK: - Login Processing
-    private func initiateLogin(type: LoginType) {
-        Task {
-            do {
-                let token = try await Messaging.messaging().token()
-                
-                do {
-                    try loginEngine?.initiateLogin(type) { [weak self] (lphResponse) in
-                        guard let self = self else { return }
-                        if lphResponse.isSuccess() {
-                            let loginVo = lphResponse.getResult()
-                            self.processLoginResponse(source: type, password: loginVo.password, token: token)
-                        }
-                    }
-                } catch let exception as LPHException<LoginError> {
-                    // Handle exception
-                }
-            } catch {
-                print("Error fetching FCM token: \(error)")
-            }
-        }
-    }
-    
-    private func processLoginResponse(source loginType: LoginType, password: String, token: String) {
-        
-        let isFirstRun = LPHUtils.getUserDefaultsInt(key: UserDefaults.Keys.isFirstRun)
-        
-        if isFirstRun == 0 {
-                
-            let loginVo = LPHUtils.getLoginVo()
-            loginVo.isLoggedIn = true
-            loginVo.loginType = loginType
-            loginVo.password = password
-            loginVo.token = token
-            LPHUtils.setLoginVo(loginVo: loginVo)
-            
-            let user = LPHUtils.getCurrentUserID()
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.mandarinSoulEnglish, value: true)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isInstrumentalOn, value: true)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isHindi_SL_EnglishOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isSpanishOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isMandarinEnglishGermanOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isFrenchOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isfrenchAntilleanCreoleOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isKawehiHawOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaEngOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaLulaEngKaHawOn, value: false)
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantCurrentStreak)", value: "0")
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantLongestStreak)", value: "0")
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantTimestamp)", value: "0:00")
-            
-//            LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.isFirstRun, value: 1)
         }
     }
     
@@ -205,90 +290,14 @@ class LoginSocialNetworkController: BaseViewController, IndicatorInfoProvider, U
         let homeTabController = LPHUtils.getStoryboard(type: .home).instantiateViewController(withIdentifier: ViewController.homeTab)
         
         let navVC = UINavigationController(rootViewController: homeTabController)
-        navVC.setNavigationBarHidden(true, animated: false)
         navVC.modalPresentationStyle = .fullScreen
-        present(navVC, animated: true, completion: nil)
+        navVC.setNavigationBarHidden(true, animated: false)
+        present(navVC, animated: true)
     }
     
-    private func fireUpdateTokenApi() {
-        var deviceToken = String()
-        let deviceInfo = DEVICE_INFO
-        showLoadingIndicator()
-
-        Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("FCM registration token: \(token)")
-            deviceToken = token
-          }
-        }
-
-
-        do {
-            let lphService = try LPHServiceFactory<LoginError>.getLPHService()
-            try lphService.updateDeviceToken(token: deviceToken, info: deviceInfo) { (parsedResponse) in
-                self.hideLoadingIndicator()
-                self.splashDelegate?.isFromLoginEnable()
-                self.dismiss(animated: true, completion: nil)
-            }
-        } catch let error {
-
-        }
-    }
-    
-}
-
-// MARK: - Apple Sign In Extension
-@available(iOS 13.0, *)
-extension LoginSocialNetworkController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    
-    func handleAppleSignIn() {
-        let provider = ASAuthorizationAppleIDProvider()
-        let request = provider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            let userId = appleIDCredential.user
-            let userFirstName = appleIDCredential.fullName?.givenName
-            let userLastName = appleIDCredential.fullName?.familyName
-            let userEmail = appleIDCredential.email
-            
-            // Create Firebase credential
-            if let identityToken = appleIDCredential.identityToken,
-               let tokenString = String(data: identityToken, encoding: .utf8) {
-                
-                let credential = OAuthProvider.credential(
-                    withProviderID: "apple.com",
-                    idToken: tokenString,
-                    rawNonce: nil
-                )
-                
-                // Sign in with Firebase
-                Task {
-                    do {
-                        let result = try await Auth.auth().signIn(with: credential)
-                        navigateToHome()
-                    } catch {
-                        showToast(message: error.localizedDescription)
-                    }
-                }
-            }
-        }
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        showToast(message: error.localizedDescription)
-    }
-    
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return view.window!
+    // MARK: - XLPagerTabStrip
+    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        return IndicatorInfo(title: "Title")
     }
 }
+

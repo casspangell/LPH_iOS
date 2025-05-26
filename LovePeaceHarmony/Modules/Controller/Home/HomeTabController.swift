@@ -4,7 +4,7 @@
 //
 //  Created by Aghil C M on 07/11/17.
 //  Updated by Cass Pangell on 9/5/21.
-//  Copyright © 2017 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 import UIKit
