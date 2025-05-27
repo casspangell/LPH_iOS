@@ -89,22 +89,22 @@
                                 <rect key="frame" x="87.5" y="358.5" width="200" height="150"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One Song" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wus-gM-1hZ">
-                                        <rect key="frame" x="15" y="8" width="170.5" height="44.5"/>
+                                        <rect key="frame" x="12.5" y="8" width="175.5" height="52"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="38"/>
                                         <color key="textColor" red="0.39871716499328613" green="0.17920699715614319" blue="0.56889539957046509" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ENy-SD-63k">
-                                        <rect key="frame" x="2.5" y="52.5" width="195.5" height="44.5"/>
+                                        <rect key="frame" x="-1.5" y="60" width="203.5" height="52"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="can" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOs-Jx-IMu">
-                                                <rect key="frame" x="0.0" y="0.0" width="62" height="44.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="63" height="52"/>
                                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="38"/>
                                                 <color key="textColor" red="0.39871716499999998" green="0.1792069972" blue="0.56889539960000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="change" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyy-UK-X5B">
-                                                <rect key="frame" x="70" y="0.0" width="125.5" height="44.5"/>
+                                                <rect key="frame" x="71" y="0.0" width="132.5" height="52"/>
                                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="38"/>
                                                 <color key="textColor" red="0.39871716499999998" green="0.1792069972" blue="0.56889539960000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -112,16 +112,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jnQ-is-LoW">
-                                        <rect key="frame" x="17" y="97" width="166.5" height="44.5"/>
+                                        <rect key="frame" x="9" y="112" width="182" height="52"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="the" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pa7-59-VKc">
-                                                <rect key="frame" x="0.0" y="0.0" width="54" height="44.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="58.5" height="52"/>
                                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="38"/>
                                                 <color key="textColor" red="0.39871716499999998" green="0.1792069972" blue="0.56889539960000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="world!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBI-hZ-z5g">
-                                                <rect key="frame" x="62" y="0.0" width="104.5" height="44.5"/>
+                                                <rect key="frame" x="66.5" y="0.0" width="115.5" height="52"/>
                                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="38"/>
                                                 <color key="textColor" red="0.39871716499999998" green="0.1792069972" blue="0.56889539960000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -277,7 +277,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IV0-nr-n1V">
                                 <rect key="frame" x="20" y="30" width="335" height="360"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="test@test.com" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NKQ-su-kpJ" userLabel="Email">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NKQ-su-kpJ" userLabel="Email">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="Kp9-zm-fiY"/>
@@ -292,7 +292,7 @@
                                             <constraint firstAttribute="height" constant="5" id="s2i-ym-Prz"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="123456" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DBM-f4-Bta" userLabel="Password">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DBM-f4-Bta" userLabel="Password">
                                         <rect key="frame" x="0.0" y="55" width="335" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="jn3-xF-Ums"/>
