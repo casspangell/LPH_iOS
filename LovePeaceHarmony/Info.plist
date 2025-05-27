@@ -6,6 +6,8 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Sing LPH</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>&quot;This app sends reminder notifications for chanting sessions&quot;</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

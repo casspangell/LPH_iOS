@@ -653,12 +653,6 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
             LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.currentSeek, value: 0)
             LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.currentChantSong, value: chantFile.rawValue)
 
-            // Start the new song using AVAudioManager
-            AVAudioManager.sharedInstance.startNewSong(chantFileName: chantFile.stringValue)
-
-            // Render song name on the UI
-            renderSongName(title: chantTitle[chantFile.rawValue])
-
         } else {
             // Enable the toggle switch for the chantFile using ChantNowManager
             ChantNowManager.shared.enableToggleSwitch(for: chantFile, in: self)
@@ -669,12 +663,6 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
             // Update user defaults
             LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.currentSeek, value: 0)
             LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.currentChantSong, value: chantFile.rawValue)
-
-            // Start the new song using AVAudioManager
-            AVAudioManager.sharedInstance.startNewSong(chantFileName: chantFile.stringValue)
-
-            // Render song name on the UI
-            renderSongName(title: chantTitle[chantFile.rawValue])
         }
     }
 
