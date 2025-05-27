@@ -55,7 +55,7 @@ class LoginController: ButtonBarPagerTabStripViewController, LoginControllerCall
     func renderShowcaseView() {
         let showcase = MaterialShowcase()
         showcase.setTargetView(view: logoImage) // always required to set targetView
-        showcase.primaryText = "Welcome to the NEW Love, Peace, Harmony App! Please be sure to register for a new account to start singing."
+        showcase.primaryText = "Welcome to the Love, Peace, Harmony App! Please be sure to register for a new account to start singing."
         showcase.secondaryText = "Tap to continue"
         
         // Background
