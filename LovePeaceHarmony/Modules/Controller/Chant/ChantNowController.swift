@@ -91,7 +91,7 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
         sliderMusicSeek.setThumbImage(#imageLiteral(resourceName: "ic_slider_thumb"), for: .focused)
         sliderMusicSeek.setThumbImage(#imageLiteral(resourceName: "ic_slider_thumb"), for: .highlighted)
         
-        ChantNowManager.shared.restoreChantSettings(for: self)
+        sliderMusicSeek.isUserInteractionEnabled = false
         
         initiateMusicPlayer()
         updateToggleSwitches()
@@ -127,22 +127,8 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     
     
     private func generateShuffleList() {
-        songListShuffled.removeAll()
-
-        // Get the enabled songs in the correct order
-        let enabledSongs = ChantUtils.shared.getSongListArray().filter { songListStatus[$0] == true }
-
-        guard let currentSong = currentSong else { return }
-
-        // Separate the current song from the rest
-        var remainingSongs = enabledSongs.filter { $0 != currentSong }
-
-        // Shuffle the remaining songs
-        remainingSongs.shuffle()
-
-        // Combine the current song with the shuffled remaining songs
-        songListShuffled.append(currentSong)
-        songListShuffled.append(contentsOf: remainingSongs)
+        let enabledSongs = ChantUtils.shared.getSongListArray()
+        songListShuffled = enabledSongs.shuffled()
 
         // Debug print
         print("---shuffled song list---")
@@ -175,8 +161,8 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
         AVAudioManager.sharedInstance.prepare()
         
         // Slider targets
-        sliderMusicSeek.addTarget(self, action: #selector(sliderTouchDown), for: UIControlEvents.touchDown)
-        sliderMusicSeek.addTarget(self, action: #selector(sliderRelease), for: UIControlEvents.touchUpInside)
+//        sliderMusicSeek.addTarget(self, action: #selector(sliderTouchDown), for: UIControlEvents.touchDown)
+//        sliderMusicSeek.addTarget(self, action: #selector(sliderRelease), for: UIControlEvents.touchUpInside)
 
         // Retrieve song statuses and ordered enabled songs
         let orderedEnabledSongs = ChantUtils.shared.getSongListArray()
@@ -315,7 +301,13 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     }
     
     private func pressedSkipForward() {
-        let enabledSongs = ChantUtils.shared.getSongListArray()
+        // Use shuffled list if shuffle is enabled
+        let enabledSongs: [ChantFile]
+        if isShuffleEnabled, !songListShuffled.isEmpty {
+            enabledSongs = songListShuffled
+        } else {
+            enabledSongs = ChantUtils.shared.getSongListArray()
+        }
         guard let currSong = currentSong else { return }
 
         // Find the current song index
@@ -356,9 +348,13 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     }
     
     private func pressedSkipBackward() {
-        // Get the enabled songs in the correct order
-        let enabledSongs = ChantUtils.shared.getSongListArray().filter { songListStatus[$0] == true }
-        
+        // Use shuffled list if shuffle is enabled
+        let enabledSongs: [ChantFile]
+        if isShuffleEnabled, !songListShuffled.isEmpty {
+            enabledSongs = songListShuffled
+        } else {
+            enabledSongs = ChantUtils.shared.getSongListArray().filter { songListStatus[$0] == true }
+        }
         guard let currSong = currentSong else { return }
 
         // Find the current song index
@@ -507,24 +503,23 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     }
     
     @IBAction func onTapShuffle(_ sender: UIButton) {
-        if !checkAndTurnShuffleRepeatOff() {
+        print("shuffle")
             isShuffleEnabled = !isShuffleEnabled
             if isShuffleEnabled {
+                print("shuffle on")
                 showToast(message: NSLocalizedString(AlertMessage.shuffleOn, comment: ""))
-                generateShuffleList()
+                let enabledSongs = ChantUtils.shared.getSongListArray()
+                songListShuffled = enabledSongs.shuffled()
+                sender.tintColor = Color.orange
+                isShuffleEnabled = true
             } else {
+                print("shuffle off")
                 showToast(message: NSLocalizedString(AlertMessage.shuffleOff, comment: ""))
+                songListShuffled = []
+                sender.tintColor = Color.disabled
+                isShuffleEnabled = false
             }
             LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShuffleEnabled, value: isShuffleEnabled)
-            if isShuffleEnabled {
-                sender.tintColor = Color.orange
-            } else {
-                sender.tintColor = Color.disabled
-            }
-        } else {
-            showToast(message: NSLocalizedString(AlertMessage.enableSong, comment: ""))
-        }
-        
     }
     
     @IBAction func onTapReplay(_ sender: UIButton) {
@@ -562,71 +557,51 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     @IBAction func onTapSwitchMandarinSoulEnglish(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.mandarinSoulEnglish, value: sender.isOn)
         songListStatus[.mandarin_soul_english] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .mandarin_soul_english)
     }
     
     @IBAction func onTapSwitchInstrumental(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isInstrumentalOn, value: sender.isOn)
         songListStatus[.instrumental] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .instrumental)
     }
     
     @IBAction func onTapSwitchHindiSLEnglish(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isHindi_SL_EnglishOn, value: sender.isOn)
         songListStatus[.hindi_sl_english] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .hindi_sl_english)
     }
     
     @IBAction func onTapSpanish(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isSpanishOn, value: sender.isOn)
         songListStatus[.spanish] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .spanish)
     }
     
     @IBAction func onTapMandarinEngGerman(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isMandarinEnglishGermanOn, value: sender.isOn)
         songListStatus[.mandarin_english_german] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .mandarin_english_german)
     }
     
     @IBAction func onTapFrench(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isFrenchOn, value: sender.isOn)
         songListStatus[.french] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .french)
     }
     
     @IBAction func onTapAntilleanCreole(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isfrenchAntilleanCreoleOn, value: sender.isOn)
         songListStatus[.french_antillean_creole] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .french_antillean_creole)
     }
 
     @IBAction func onTapKawehiHaw(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isKawehiHawOn, value: sender.isOn)
         songListStatus[.kawehi_haw] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .kawehi_haw)
     }
     
     @IBAction func onTapShaLulaEngKaHaw(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaLulaEngKaHawOn, value: sender.isOn)
         songListStatus[.sha_lula_eng_ka_haw] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .sha_lula_eng_ka_haw)
     }
 
     @IBAction func onTapShaEng(_ sender: UISwitch) {
         LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaEngOn, value: sender.isOn)
         songListStatus[.sha_eng] = sender.isOn
-//        checkAndTurnShuffleRepeatOff()
-//        forceStopPlaying(chantSong: .sha_eng)
     }
     
 // MARK: OnTap Gestures
