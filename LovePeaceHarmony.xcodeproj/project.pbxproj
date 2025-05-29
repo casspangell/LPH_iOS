@@ -83,6 +83,7 @@
 		6FE1225B1FD69A830026CC90 /* AlarmUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1225A1FD69A830026CC90 /* AlarmUtils.swift */; };
 		6FE771971FD12E21007FE8EF /* ChantReminderAddEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE771961FD12E21007FE8EF /* ChantReminderAddEditController.swift */; };
 		896185FC2DE545D000E2FF3F /* mandarin_soul_english.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */; };
+		899F282C2DE8CD850050ED35 /* how_to_change_the_world.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 899F282B2DE8CD850050ED35 /* how_to_change_the_world.mp4 */; };
 		89DAE0012DE421A600E39F0F /* LPHActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */; };
 		9754A5DE2C0CD75500B1904D /* ChantMilestoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */; };
 		9754A5E02C0CDB1700B1904D /* AVAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */; };
@@ -187,6 +188,7 @@
 		6FE1225A1FD69A830026CC90 /* AlarmUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmUtils.swift; sourceTree = "<group>"; };
 		6FE771961FD12E21007FE8EF /* ChantReminderAddEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantReminderAddEditController.swift; sourceTree = "<group>"; };
 		896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mandarin_soul_english.mp3; sourceTree = "<group>"; };
+		899F282B2DE8CD850050ED35 /* how_to_change_the_world.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = how_to_change_the_world.mp4; sourceTree = "<group>"; };
 		89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPHActionButton.swift; sourceTree = "<group>"; };
 		9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantMilestoneManager.swift; sourceTree = "<group>"; };
 		9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioManager.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 		6F3D8BD71FB1CD00008E0D82 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				899F282A2DE8CD7A0050ED35 /* video */,
 				6F95DA572032DE3C0086B8BA /* Fonts */,
 				6F74D2521FD5B5F400F96E1A /* audio */,
 				6F8BDECF1FB4722600D924C6 /* Lottie-Files */,
@@ -467,6 +470,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		899F282A2DE8CD7A0050ED35 /* video */ = {
+			isa = PBXGroup;
+			children = (
+				899F282B2DE8CD850050ED35 /* how_to_change_the_world.mp4 */,
+			);
+			path = video;
+			sourceTree = "<group>";
+		};
 		89DAE0002DE421A600E39F0F /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -583,6 +594,7 @@
 				6F38C7E11FB1D9D6005390C5 /* Podfile in Resources */,
 				6F9A39122008DDC700CF255F /* instrumental.mp3 in Resources */,
 				6FC63F332032FF1E00C1CC96 /* OpenSans-Bold.ttf in Resources */,
+				899F282C2DE8CD850050ED35 /* how_to_change_the_world.mp4 in Resources */,
 				505301B725A0249100C61E82 /* kawehi_haw.mp3 in Resources */,
 				6F3F6672204D39E900ADFFFC /* OpenSans-Italic.ttf in Resources */,
 				6F3D8BC21FB1CC2B008E0D82 /* Main.storyboard in Resources */,
