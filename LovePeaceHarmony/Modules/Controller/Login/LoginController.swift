@@ -25,6 +25,8 @@ class LoginController: ButtonBarPagerTabStripViewController, LoginControllerCall
     @IBOutlet weak var scrollViewContainer: UIScrollView!
     @IBOutlet weak var imageViewCover: UIImageView!
     @IBOutlet weak var logoImage: UIImageView!
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+    private var originalScrollViewTop: CGFloat = 0
     
     // MARK: -View
     override func viewDidLoad() {
@@ -35,9 +37,13 @@ class LoginController: ButtonBarPagerTabStripViewController, LoginControllerCall
         containerView = scrollViewContainer
         settings.style.buttonBarHeight = 0
         super.viewDidLoad()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(sender:)))
-        tap.cancelsTouchesInView = true
-        tap.delegate = self
+        originalScrollViewTop = scrollViewTopConstraint.constant
+        // Keyboard notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        // Tap to dismiss keyboard
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
@@ -134,7 +140,35 @@ class LoginController: ButtonBarPagerTabStripViewController, LoginControllerCall
         return viewControllerList
     }
     
-    @objc func dismissKeyboard(sender: UITapGestureRecognizer) {
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect,
+              let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
+              let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt else { return }
+
+        let scrollViewFrameInWindow = scrollViewContainer.convert(scrollViewContainer.bounds, to: view.window)
+        let overlap = (scrollViewFrameInWindow.maxY + 16) - keyboardFrame.origin.y
+
+        if overlap > 0 {
+            UIView.animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: curve << 16), animations: {
+                self.scrollViewTopConstraint.constant = self.originalScrollViewTop - overlap
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
+              let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? UInt else { return }
+
+        UIView.animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: curve << 16), animations: {
+            self.scrollViewTopConstraint.constant = self.originalScrollViewTop
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     

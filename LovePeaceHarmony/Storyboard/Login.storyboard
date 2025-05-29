@@ -260,6 +260,7 @@
                         <outlet property="imageViewCover" destination="Mdc-4a-1td" id="qku-ft-nVG"/>
                         <outlet property="logoImage" destination="sfK-Zh-mZS" id="1mE-rN-GxU"/>
                         <outlet property="scrollViewContainer" destination="SVp-ES-ggI" id="K5W-Ck-qAO"/>
+                        <outlet property="scrollViewTopConstraint" destination="mA5-aV-kM0" id="2cj-gf-7HI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tqW-Q1-zdl" userLabel="First Responder" sceneMemberID="firstResponder"/>
