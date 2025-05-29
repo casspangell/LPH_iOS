@@ -3,7 +3,7 @@
 //  LovePeaceHarmony
 //
 //  Created by Cass Pangell on 6/1/24.
-//  Copyright © 2024 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 import UIKit

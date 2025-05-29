@@ -169,7 +169,6 @@
 		6F9867541FD6B28200A37114 /* LoginVo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVo.swift; sourceTree = "<group>"; };
 		6F9867561FD6C2FE00A37114 /* ProfileLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLoginController.swift; sourceTree = "<group>"; };
 		6F9A390F2008DDC400CF255F /* instrumental.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = instrumental.mp3; sourceTree = "<group>"; };
-		6F9A39102008DDC600CF255F /* mandarin-soul_language-english.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mandarin-soul_language-english.mp3"; sourceTree = "<group>"; };
 		6FA48E511FD183BB0083BAF5 /* AlarmRepeatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmRepeatController.swift; sourceTree = "<group>"; };
 		6FAC87B81FE0F3E700520A51 /* AboutSongController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSongController.swift; sourceTree = "<group>"; };
 		6FAC87BA1FE0F40800520A51 /* AboutMovementController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMovementController.swift; sourceTree = "<group>"; };
@@ -187,7 +186,7 @@
 		6FDFDBF4201EE9CD00D1FBB7 /* LovePeaceHarmony.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LovePeaceHarmony.xcdatamodel; sourceTree = "<group>"; };
 		6FE1225A1FD69A830026CC90 /* AlarmUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmUtils.swift; sourceTree = "<group>"; };
 		6FE771961FD12E21007FE8EF /* ChantReminderAddEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantReminderAddEditController.swift; sourceTree = "<group>"; };
-		896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = mandarin_soul_english.mp3; path = LovePeaceHarmony/Resources/audio/mandarin_soul_english.mp3; sourceTree = "<group>"; };
+		896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mandarin_soul_english.mp3; sourceTree = "<group>"; };
 		89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPHActionButton.swift; sourceTree = "<group>"; };
 		9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantMilestoneManager.swift; sourceTree = "<group>"; };
 		9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioManager.swift; sourceTree = "<group>"; };
@@ -221,7 +220,6 @@
 		6F3D8BB01FB1CC2B008E0D82 = {
 			isa = PBXGroup;
 			children = (
-				896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */,
 				6F38C7E01FB1D9D6005390C5 /* Podfile */,
 				6F3D8BBB1FB1CC2B008E0D82 /* LovePeaceHarmony */,
 				6F3D8BBA1FB1CC2B008E0D82 /* Products */,
@@ -417,7 +415,7 @@
 				5053014F259D9EE700C61E82 /* mandarin_english_german.mp3 */,
 				50530150259D9EEA00C61E82 /* spanish.mp3 */,
 				6F9A390F2008DDC400CF255F /* instrumental.mp3 */,
-				6F9A39102008DDC600CF255F /* mandarin-soul_language-english.mp3 */,
+				896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */,
 				6F74D2531FD5B87000F96E1A /* email.mp3 */,
 			);
 			path = audio;

@@ -3,82 +3,162 @@
 //  LovePeaceHarmony
 //
 //  Created by Cass Pangell on 6/1/24.
-//  Copyright © 2024 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 import AVFoundation
 
-class AVAudioManager {
+class AVAudioManager: NSObject, AVAudioPlayerDelegate {
     
-static let sharedInstance = AVAudioManager()
-private var player: AVAudioPlayer?
-var isAudioPlaying:Bool? = false
+    static let sharedInstance = AVAudioManager()
+    private var player: AVAudioPlayer?
+    var isAudioPlaying:Bool? = false
+    
+    // Debug logging
+    private var debugLogs: [String] = []
+    var onLogUpdate: (([String]) -> Void)?
+    
+    // AVAudioPlayerDelegate methods
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        addDebugLog("Audio player finished playing. Success: \(flag)")
+        isAudioPlaying = false
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        if let error = error {
+            addDebugLog("❌ Audio player decode error: \(error.localizedDescription)")
+        } else {
+            addDebugLog("❌ Audio player decode error occurred")
+        }
+    }
+    
+    private func addDebugLog(_ message: String) {
+        let timestamp = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .medium)
+        let logMessage = "[\(timestamp)] \(message)"
+        debugLogs.append(logMessage)
+        if debugLogs.count > 100 { // Keep last 100 logs
+            debugLogs.removeFirst()
+        }
+        onLogUpdate?(debugLogs)
+        print(logMessage) // Also print to console
+    }
+    
+    func getDebugLogs() -> [String] {
+        return debugLogs
+    }
+    
+    func clearDebugLogs() {
+        debugLogs.removeAll()
+        onLogUpdate?(debugLogs)
+    }
 
     func prepare() {
-        print("[AVAudioManager] prepare called")
+        addDebugLog("Prepare called")
         player?.prepareToPlay()
         isAudioPlaying = false
     }
 
     func loadSong(chantFileName: ChantFile) {
-        print("[AVAudioManager] loadSong called with", chantFileName)
+        addDebugLog("Load song called with \(chantFileName)")
         AVAudioManager.sharedInstance.startNewSong(chantFileName: chantFileName.stringValue)
-        print("Loaded ", chantFileName)
+        addDebugLog("Loaded \(chantFileName)")
     }
         
     func startNewSong(chantFileName: String) {
-        print("[AVAudioManager] startNewSong called with", chantFileName)
+        addDebugLog("\n=== Starting New Song ===")
+        addDebugLog("Attempting to load song: \(chantFileName)")
+        
         guard let url = Bundle.main.url(forResource: chantFileName, withExtension: "mp3") else {
-            print("[AVAudioManager] ERROR: Could not find mp3 for", chantFileName)
+            addDebugLog("❌ ERROR: Could not find MP3 file in bundle")
+            addDebugLog("Looking for: \(chantFileName).mp3")
+            addDebugLog("Bundle paths:")
+            Bundle.main.paths(forResourcesOfType: "mp3", inDirectory: nil).forEach { addDebugLog("- \($0)") }
             return
         }
+        addDebugLog("✅ Found MP3 file at: \(url.path)")
+        
         do {
-            // Use string constants for compatibility
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, mode: AVAudioSessionModeDefault, options: [.defaultToSpeaker])
-            try AVAudioSession.sharedInstance().setActive(true)
+            addDebugLog("\n=== Configuring Audio Session ===")
+            let audioSession = AVAudioSession.sharedInstance()
+            addDebugLog("Current audio session category: \(audioSession.category)")
+            addDebugLog("Current audio session mode: \(audioSession.mode)")
+            addDebugLog("Current audio session options: \(audioSession.categoryOptions)")
+            
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+            try audioSession.setActive(true)
+            addDebugLog("✅ Audio session configured successfully")
+            
+            addDebugLog("\n=== Creating Audio Player ===")
             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            print("[AVAudioManager] AVAudioPlayer created for", chantFileName)
+            player?.prepareToPlay()
+            player?.delegate = self
+            
+            addDebugLog("Audio player details:")
+            addDebugLog("- Duration: \(player?.duration ?? 0) seconds")
+            addDebugLog("- Format: \(player?.format.description ?? "unknown")")
+            addDebugLog("- Number of channels: \(player?.numberOfChannels ?? 0)")
+            addDebugLog("- Volume: \(player?.volume ?? 0)")
+            
+            addDebugLog("\n=== Starting Playback ===")
             self.play()
         } catch let error {
-            print("[AVAudioManager] ERROR:", error.localizedDescription)
+            addDebugLog("\n❌ ERROR in audio setup:")
+            addDebugLog("Error description: \(error.localizedDescription)")
+            addDebugLog("Error details: \(error)")
+            addDebugLog("Error domain: \(error._domain)")
+            addDebugLog("Error code: \(error._code)")
         }
     }
     
     func playPause(chantArray: [ChantFile: Bool]) {
-        print("[AVAudioManager] playPause called. isPlaying:", AVAudioManager.sharedInstance.isPlaying())
-        // Check if the audio player is currently playing, if playing, pause the audio
+        print("\n=== DEBUG: Play/Pause Called ===")
+        print("Current playing state: \(AVAudioManager.sharedInstance.isPlaying())")
+        
         if AVAudioManager.sharedInstance.isPlaying() {
-            print("[AVAudioManager] Pausing audio")
+            print("Pausing audio...")
             AVAudioManager.sharedInstance.pause()
         } else {
-            // If not playing, check if a song is loaded
             if !AVAudioManager.sharedInstance.isSongLoaded() {
-                print("[AVAudioManager] No song loaded, searching for first enabled chant file...")
-                // If no song is loaded, find the first enabled chant file from the array
+                print("No song loaded, checking for enabled chants...")
+                print("Enabled chants:")
+                chantArray.forEach { print("- \($0.key): \($0.value)") }
+                
                 if let firstEnabledChantFile = chantArray.first(where: { $0.value })?.key {
-                    print("[AVAudioManager] Loading first enabled chant file:", firstEnabledChantFile)
+                    print("Loading first enabled chant: \(firstEnabledChantFile)")
                     loadSong(chantFileName: firstEnabledChantFile)
                 } else {
-                    print("[AVAudioManager] ERROR: No enabled chant files found in array")
+                    print("❌ No enabled chants found")
                 }
                 return
             }
-            // If a song is already loaded, play the audio
-            print("[AVAudioManager] Playing loaded audio")
+            print("Playing loaded audio...")
             AVAudioManager.sharedInstance.play()
         }
     }
     
     func play() {
-        print("[AVAudioManager] play called")
+        addDebugLog("\n=== Play Called ===")
         guard let player = player else {
-            print("[AVAudioManager] ERROR: player is nil in play()")
+            addDebugLog("❌ ERROR: Audio player is nil")
             isAudioPlaying = false
             return
         }
-        player.play()
-        isAudioPlaying = true
-        print("[AVAudioManager] player.play() called, isPlaying:", player.isPlaying)
+        
+        addDebugLog("Current player state:")
+        addDebugLog("- Duration: \(player.duration) seconds")
+        addDebugLog("- Current time: \(player.currentTime) seconds")
+        addDebugLog("- Number of channels: \(player.numberOfChannels)")
+        addDebugLog("- Format: \(player.format.description)")
+        addDebugLog("- Volume: \(player.volume)")
+        addDebugLog("- Is playing: \(player.isPlaying)")
+        
+        let success = player.play()
+        addDebugLog("\nPlayback attempt result:")
+        addDebugLog("- Success: \(success)")
+        addDebugLog("- Is playing after play(): \(player.isPlaying)")
+        addDebugLog("- Current time after play(): \(player.currentTime)")
+        
+        isAudioPlaying = success
     }
     
     func pause() {

@@ -888,7 +888,7 @@
     <resources>
         <image name="ic_arrow_left" width="24" height="24"/>
         <image name="ic_cover_page" width="320" height="182"/>
-        <image name="ic_logo" width="341.5" height="66.5"/>
+        <image name="ic_logo" width="256" height="50"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

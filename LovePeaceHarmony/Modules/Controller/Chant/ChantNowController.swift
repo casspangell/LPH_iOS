@@ -3,7 +3,7 @@
 //  LovePeaceHarmony
 //
 //  Created by Cass Pangell on 6/1/24.
-//  Copyright © 2024 LovePeaceHarmony. All rights reserved.
+//  Copyright © 2025 LovePeaceHarmony. All rights reserved.
 //
 
 import UIKit
@@ -99,8 +99,6 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
         if isShuffleEnabled {
             generateShuffleList()
         }
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
 
@@ -683,5 +681,4 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
                             
         })
     }
-    
 }
