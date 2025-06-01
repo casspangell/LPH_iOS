@@ -69,7 +69,7 @@ class AVAudioManager: NSObject, AVAudioPlayerDelegate {
         addDebugLog("Attempting to load song: \(chantFileName)")
         
         guard let url = Bundle.main.url(forResource: chantFileName, withExtension: "mp3") else {
-            addDebugLog("❌ ERROR: Could not find MP3 file in bundle")
+            addDebugLog("❌ ERROR: \(NSLocalizedString("Could not find MP3 file in bundle", comment: "Error message when MP3 file is not found"))")
             addDebugLog("Looking for: \(chantFileName).mp3")
             addDebugLog("Bundle paths:")
             Bundle.main.paths(forResourcesOfType: "mp3", inDirectory: nil).forEach { addDebugLog("- \($0)") }
@@ -139,7 +139,7 @@ class AVAudioManager: NSObject, AVAudioPlayerDelegate {
     func play() {
         addDebugLog("\n=== Play Called ===")
         guard let player = player else {
-            addDebugLog("❌ ERROR: Audio player is nil")
+            addDebugLog("❌ ERROR: \(NSLocalizedString("Audio player is not available", comment: "Error message when audio player is nil"))")
             isAudioPlaying = false
             return
         }
