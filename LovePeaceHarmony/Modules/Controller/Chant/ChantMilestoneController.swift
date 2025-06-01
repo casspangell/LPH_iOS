@@ -72,14 +72,17 @@ class ChantMilestoneController: BaseViewController, IndicatorInfoProvider {
         loadPreviouslySavedData(userId: userId)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let userId = LPHUtils.getCurrentUserID()
+        loadPreviouslySavedData(userId: userId)
+    }
+    
     private func loadPreviouslySavedData(userId: String) {
-        let timeStamp = LPHUtils.getUserDefaultsString(key: "\(userId):\(UserDefaults.Keys.chantTimestamp)")
-        let daysStraight = LPHUtils.getUserDefaultsString(key: "\(userId):\(UserDefaults.Keys.chantCurrentStreak)")
-        let longestStreak = LPHUtils.getUserDefaultsString(key: "\(userId):\(UserDefaults.Keys.chantLongestStreak)")
-        
-        labelMinutesCount.text = timeStamp
-        labelDayCount.text = daysStraight
-        labelStreakCount.text = longestStreak
+        // Show placeholders while loading
+        labelMinutesCount.text = "--:--:--"
+        labelDayCount.text = "--"
+        labelStreakCount.text = "--"
 
         timestampActivityIndicator.startAnimating()
         daysStraightActivityIndicator.startAnimating()
@@ -141,47 +144,37 @@ class ChantMilestoneController: BaseViewController, IndicatorInfoProvider {
     private func fireMilestoneDetails(userId: String) {
         showLoadingIndicator()
         
-        APIUtilities.fetchTotalSecsChanted(userID: userId) { [self] (result) in
+        APIUtilities.fetchTotalSecsChanted(userID: userId) { [weak self] (result) in
             switch result {
             case .success(let seconds):
-
-                let timeStamp = LPHUtils.returnHoursMinsSeconds(seconds: seconds)
-                
-                if timeStamp.count == 1 {
-                    labelMinutesCount.text = "00:0\(timeStamp)"
-                } else if timeStamp.count == 2 {
-                    labelMinutesCount.text = "00:\(timeStamp)"
-                } else {
-                    labelMinutesCount.text = timeStamp
+                print("Fetched seconds:", seconds)
+                DispatchQueue.main.async {
+                    self?.labelMinutesCount.text = LPHUtils.formatSecondsToHMS(seconds: Int(seconds))
                 }
-                
-                
-
             case .failure(let error):
-                fatalError("Error: \(String(describing: error))")
+                print("Error fetching seconds:", error)
             }
-            
         }
 
-        APIUtilities.fetchCurrentChantingStreak(userID: userId) { (result) in
+        APIUtilities.fetchCurrentChantingStreak(userID: userId) { [weak self] (result) in
             switch result {
             case .success(let streak):
-                
-                self.labelStreakCount.text = String(streak.longest_streak)
-                self.labelDayCount.text = String(streak.current_streak)
-                
-
-                
+                print("Fetched streak:", streak)
+                DispatchQueue.main.async {
+                    self?.labelStreakCount.text = String(streak.longest_streak)
+                    self?.labelDayCount.text = String(streak.current_streak)
+                }
             case .failure(let error):
-                fatalError("Error: \(String(describing: error))")
+                print("Error fetching streak:", error)
             }
         }
-        
-        self.timestampActivityIndicator.stopAnimating()
-        self.daysStraightActivityIndicator.stopAnimating()
-        self.longestStreakActivityIndicator.stopAnimating()
-        hideLoadingIndicator()
 
+        DispatchQueue.main.async {
+            self.timestampActivityIndicator.stopAnimating()
+            self.daysStraightActivityIndicator.stopAnimating()
+            self.longestStreakActivityIndicator.stopAnimating()
+            self.hideLoadingIndicator()
+        }
     }
 
 }

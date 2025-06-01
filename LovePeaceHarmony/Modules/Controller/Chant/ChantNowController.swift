@@ -12,6 +12,7 @@ import XLPagerTabStrip
 import AVFoundation
 import Firebase
 import MaterialShowcase
+import LovePeaceHarmony
 
 class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlayerDelegate {
     
@@ -290,15 +291,18 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
             } else {
                 AVAudioManager.sharedInstance.play()
             }
+            ChantTimeTracker.shared.start()
         } else {
             buttonPlayPause.setImage(#imageLiteral(resourceName: "ic_play"), for: .normal)
 //            ChantMilestoneManager.shared.processChantingMilestone()
             startTime = labelSeekTime.text // Set new start time
             sliderTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ChantNowController.updateSlider), userInfo: nil, repeats: true)
+            ChantTimeTracker.shared.stopAndFlush()
         }
     }
     
     private func pressedSkipForward() {
+        ChantTimeTracker.shared.stopAndFlush()
         // Use shuffled list if shuffle is enabled
         let enabledSongs: [ChantFile]
         if isShuffleEnabled, !songListShuffled.isEmpty {
@@ -346,6 +350,7 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     }
     
     private func pressedSkipBackward() {
+        ChantTimeTracker.shared.stopAndFlush()
         // Use shuffled list if shuffle is enabled
         let enabledSongs: [ChantFile]
         if isShuffleEnabled, !songListShuffled.isEmpty {
@@ -405,6 +410,7 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
     
     private func forceStopPlaying(chantSong: ChantFile) {
         ChantMilestoneManager.shared.processChantingMilestone(currentTimeString: labelSeekTime.text ?? "", startTimeString: startTime ?? "")
+        ChantTimeTracker.shared.stopAndFlush()
 
         if currentSong == chantSong {
             if AVAudioManager.sharedInstance.isPlaying() {
@@ -484,6 +490,7 @@ class ChantNowController: BaseViewController, IndicatorInfoProvider, AVAudioPlay
         if currentSong != nil {
             pressedSkipForward()
         }
+        ChantTimeTracker.shared.stopAndFlush()
     }
     
     //MARK: - IBActions

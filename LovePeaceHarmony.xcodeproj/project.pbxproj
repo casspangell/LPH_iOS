@@ -84,6 +84,9 @@
 		6FE771971FD12E21007FE8EF /* ChantReminderAddEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE771961FD12E21007FE8EF /* ChantReminderAddEditController.swift */; };
 		896185FC2DE545D000E2FF3F /* mandarin_soul_english.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */; };
 		899F282C2DE8CD850050ED35 /* how_to_change_the_world.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 899F282B2DE8CD850050ED35 /* how_to_change_the_world.mp4 */; };
+		899F282E2DE90D100050ED35 /* ChantTimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F282D2DE90D100050ED35 /* ChantTimeTracker.swift */; };
+		899F28302DE914850050ED35 /* LoadingSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F282F2DE914850050ED35 /* LoadingSpinner.swift */; };
+		899F28352DE914920050ED35 /* TabPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F28322DE914920050ED35 /* TabPagerViewController.swift */; };
 		89DAE0012DE421A600E39F0F /* LPHActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */; };
 		9754A5DE2C0CD75500B1904D /* ChantMilestoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */; };
 		9754A5E02C0CDB1700B1904D /* AVAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */; };
@@ -189,6 +192,9 @@
 		6FE771961FD12E21007FE8EF /* ChantReminderAddEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantReminderAddEditController.swift; sourceTree = "<group>"; };
 		896185FB2DE545D000E2FF3F /* mandarin_soul_english.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mandarin_soul_english.mp3; sourceTree = "<group>"; };
 		899F282B2DE8CD850050ED35 /* how_to_change_the_world.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = how_to_change_the_world.mp4; sourceTree = "<group>"; };
+		899F282D2DE90D100050ED35 /* ChantTimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantTimeTracker.swift; sourceTree = "<group>"; };
+		899F282F2DE914850050ED35 /* LoadingSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinner.swift; sourceTree = "<group>"; };
+		899F28322DE914920050ED35 /* TabPagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPagerViewController.swift; sourceTree = "<group>"; };
 		89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPHActionButton.swift; sourceTree = "<group>"; };
 		9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantMilestoneManager.swift; sourceTree = "<group>"; };
 		9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioManager.swift; sourceTree = "<group>"; };
@@ -271,6 +277,8 @@
 		6F3D8BD21FB1CCCC008E0D82 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				899F28322DE914920050ED35 /* TabPagerViewController.swift */,
+				899F282F2DE914850050ED35 /* LoadingSpinner.swift */,
 				6F3D8BDB1FB1CDB0008E0D82 /* BaseViewController.swift */,
 				5018584B25FFEFEA005BF009 /* APIUtilities.swift */,
 				6F3D8BE11FB1D09D008E0D82 /* LPHConstants.swift */,
@@ -362,6 +370,7 @@
 		6F3D8BEC1FB1D2D1008E0D82 /* Chant */ = {
 			isa = PBXGroup;
 			children = (
+				899F282D2DE90D100050ED35 /* ChantTimeTracker.swift */,
 				6F3D8BE51FB1D255008E0D82 /* ChantController.swift */,
 				6F3D8BF11FB1D710008E0D82 /* ChantNowController.swift */,
 				6F3D8BF31FB1D792008E0D82 /* ChantReminderController.swift */,
@@ -717,6 +726,7 @@
 				6F3D8BDC1FB1CDB0008E0D82 /* BaseViewController.swift in Sources */,
 				6FB00EB31FE90EC5000646F4 /* NewsCategoryDetailsController.swift in Sources */,
 				6F3C777A1FB32B4200438088 /* NewsVo.swift in Sources */,
+				899F282E2DE90D100050ED35 /* ChantTimeTracker.swift in Sources */,
 				6F6356E91FCE99C0002E2C13 /* SignUpEmailController.swift in Sources */,
 				6F3D8BE41FB1D12E008E0D82 /* HomeTabController.swift in Sources */,
 				6F3D8BDA1FB1CD66008E0D82 /* ProfileVo.swift in Sources */,
@@ -730,6 +740,7 @@
 				6F3C77741FB30F0300438088 /* LPHUtils.swift in Sources */,
 				9754A5E02C0CDB1700B1904D /* AVAudioManager.swift in Sources */,
 				6F3C77701FB30E6100438088 /* LPHServiceImpl.swift in Sources */,
+				899F28302DE914850050ED35 /* LoadingSpinner.swift in Sources */,
 				6FE1225B1FD69A830026CC90 /* AlarmUtils.swift in Sources */,
 				6F8BDECE1FB432F000D924C6 /* NewsError.swift in Sources */,
 				6F3D8BE21FB1D09D008E0D82 /* LPHConstants.swift in Sources */,
@@ -759,6 +770,7 @@
 				6F9867551FD6B28200A37114 /* LoginVo.swift in Sources */,
 				6F6356E51FCE997E002E2C13 /* LoginSocialNetworkController.swift in Sources */,
 				6F18D42D1FF37D400026A617 /* SocialLoginEngine.swift in Sources */,
+				899F28352DE914920050ED35 /* TabPagerViewController.swift in Sources */,
 				6F8FC5BD1FCEBF67000BDCD6 /* LoginController.swift in Sources */,
 				6FD5FE6420219EA900CF7C5B /* CategoryVo.swift in Sources */,
 			);
@@ -931,7 +943,7 @@
 				INFOPLIST_FILE = LovePeaceHarmony/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.lovepeaceharmony.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -956,7 +968,7 @@
 				INFOPLIST_FILE = LovePeaceHarmony/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.lovepeaceharmony.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -65,8 +65,8 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
         
         if #available(iOS 12.0, *) {
             textFieldEmail.textContentType = .username
-            textFieldPassword.textContentType = .newPassword
-            textFieldConfirmPassword.textContentType = .newPassword
+            textFieldPassword.textContentType = .oneTimeCode
+            textFieldConfirmPassword.textContentType = .oneTimeCode
         }
     }
     
@@ -281,35 +281,40 @@ class SignUpEmailController: BaseViewController, IndicatorInfoProvider, UITextFi
     }
     
     private func processLoginResponse(email: String, password: String) {
-            let loginVo = LPHUtils.getLoginVo()
-            loginVo.isLoggedIn = true
-            loginVo.email = email
-            loginVo.password = password
-//            loginVo.fullName = profileVo.name
-//            loginVo.profilePicUrl = profileVo.profilePic
-            loginVo.loginType = .email
-//            loginVo.inviteCode = profileVo.inviteCode
-//            loginVo.token = response.getMetadata() as! String
-            let user = LPHUtils.getCurrentUserID()
-            LPHUtils.setLoginVo(loginVo: loginVo)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.mandarinSoulEnglish, value: true)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isInstrumentalOn, value: true)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isHindi_SL_EnglishOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isSpanishOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isMandarinEnglishGermanOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isFrenchOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isfrenchAntilleanCreoleOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isKawehiHawOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaEngOn, value: false)
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaLulaEngKaHawOn, value: false)
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantCurrentStreak)", value: "0")
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantLongestStreak)", value: "0")
-            LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantTimestamp)", value: "0:00")
-        
-            LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isTutorialShown, value: true)
-//            LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.isFirstRun, value: 1)
-        
+        let loginVo = LPHUtils.getLoginVo()
+        loginVo.isLoggedIn = true
+        loginVo.email = email
+        loginVo.password = password
+//        loginVo.fullName = profileVo.name
+//        loginVo.profilePicUrl = profileVo.profilePic
+        loginVo.loginType = .email
+//        loginVo.inviteCode = profileVo.inviteCode
+//        loginVo.token = response.getMetadata() as! String
+        let user = LPHUtils.getCurrentUserID()
+        LPHUtils.setLoginVo(loginVo: loginVo)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.mandarinSoulEnglish, value: true)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isInstrumentalOn, value: true)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isHindi_SL_EnglishOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isSpanishOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isMandarinEnglishGermanOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isFrenchOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isfrenchAntilleanCreoleOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isKawehiHawOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaEngOn, value: false)
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isShaLulaEngKaHawOn, value: false)
+        LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantCurrentStreak)", value: "0")
+        LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantLongestStreak)", value: "0")
+        LPHUtils.setUserDefaultsString(key: "\(user):\(UserDefaults.Keys.chantTimestamp)", value: "0:00")
+    
+        LPHUtils.setUserDefaultsBool(key: UserDefaults.Keys.isTutorialShown, value: true)
+//        LPHUtils.setUserDefaultsInt(key: UserDefaults.Keys.isFirstRun, value: 1)
+    
+        // Show loading spinner while erasing milestone data
+        self.view.showLoadingSpinner(message: "Setting up your account...")
+        APIUtilities.eraseMilestones(userID: user) { _ in
+            self.view.hideLoadingSpinner()
             self.fireUpdateTokenApi()
+        }
     }
     
     // MARK: - Apis

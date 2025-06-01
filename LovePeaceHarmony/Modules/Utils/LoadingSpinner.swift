@@ -28,7 +28,12 @@ final class LoadingSpinner {
     }()
     
     private lazy var spinnerView: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .large)
+        let spinner: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            spinner = UIActivityIndicatorView(activityIndicatorStyle: .large)
+        } else {
+            spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        }
         spinner.translatesAutoresizingMaskIntoConstraints = false
         spinner.hidesWhenStopped = true
         spinner.color = .systemIndigo
