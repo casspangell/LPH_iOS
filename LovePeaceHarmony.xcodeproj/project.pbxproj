@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		319CB3242854F979D94A0538 /* Pods_LovePeaceHarmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2139732EA45C62704A144544 /* Pods_LovePeaceHarmony.framework */; };
 		5018584C25FFEFEA005BF009 /* APIUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5018584B25FFEFEA005BF009 /* APIUtilities.swift */; };
 		50327B62251CE06E002B34C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50327B61251CE06E002B34C0 /* GoogleService-Info.plist */; };
 		50530153259D9EED00C61E82 /* french.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5053014E259D9EE600C61E82 /* french.mp3 */; };
@@ -92,11 +91,12 @@
 		9754A5E02C0CDB1700B1904D /* AVAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */; };
 		9754A5E22C0CE31F00B1904D /* ChantNowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5E12C0CE31F00B1904D /* ChantNowManager.swift */; };
 		97A2FC3A2C0BD348006F3212 /* ChantUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2FC392C0BD348006F3212 /* ChantUtils.swift */; };
+		B3399CF0A854745DF16C928E /* Pods_LovePeaceHarmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1FE947B96407BB07915B8DF4 /* Pods-LovePeaceHarmony.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.release.xcconfig"; path = "Pods/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.release.xcconfig"; sourceTree = "<group>"; };
-		2139732EA45C62704A144544 /* Pods_LovePeaceHarmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LovePeaceHarmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.release.xcconfig"; path = "Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.release.xcconfig"; sourceTree = "<group>"; };
+		4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.debug.xcconfig"; path = "Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.debug.xcconfig"; sourceTree = "<group>"; };
 		5018584B25FFEFEA005BF009 /* APIUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUtilities.swift; sourceTree = "<group>"; };
 		50327B61251CE06E002B34C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5053014E259D9EE600C61E82 /* french.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = french.mp3; sourceTree = "<group>"; };
@@ -121,7 +121,6 @@
 		50DB654526710E2F004A7BFE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = LovePeaceHarmony/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		50DB654826710E3E004A7BFE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = LovePeaceHarmony/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		50F3CA72260ACDF300046366 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
-		6D679B173A2FC089269966FA /* Pods-LovePeaceHarmony.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.debug.xcconfig"; sourceTree = "<group>"; };
 		6F18D42C1FF37D400026A617 /* SocialLoginEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginEngine.swift; sourceTree = "<group>"; };
 		6F18D42E1FF3825D0026A617 /* LovePeaceHarmony-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LovePeaceHarmony-Bridging-Header.h"; sourceTree = "<group>"; };
 		6F1BA7731FE3C99000BF58B4 /* DBUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUtils.swift; sourceTree = "<group>"; };
@@ -200,6 +199,7 @@
 		9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioManager.swift; sourceTree = "<group>"; };
 		9754A5E12C0CE31F00B1904D /* ChantNowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantNowManager.swift; sourceTree = "<group>"; };
 		97A2FC392C0BD348006F3212 /* ChantUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantUtils.swift; sourceTree = "<group>"; };
+		FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LovePeaceHarmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,13 +208,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FCEBB931FE7A560003D7238 /* UserNotifications.framework in Frameworks */,
-				319CB3242854F979D94A0538 /* Pods_LovePeaceHarmony.framework in Frameworks */,
+				B3399CF0A854745DF16C928E /* Pods_LovePeaceHarmony.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		41666BBCE23FD48D9D8EBBCD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */,
+				09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6F3C776C1FB30E2900438088 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,8 +241,8 @@
 				6F38C7E01FB1D9D6005390C5 /* Podfile */,
 				6F3D8BBB1FB1CC2B008E0D82 /* LovePeaceHarmony */,
 				6F3D8BBA1FB1CC2B008E0D82 /* Products */,
-				EAB13DC97949DC607EEFAD11 /* Pods */,
 				B69F1658A2DA14EBBF83330F /* Frameworks */,
+				41666BBCE23FD48D9D8EBBCD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -499,18 +509,9 @@
 			isa = PBXGroup;
 			children = (
 				6FCEBB921FE7A560003D7238 /* UserNotifications.framework */,
-				2139732EA45C62704A144544 /* Pods_LovePeaceHarmony.framework */,
+				FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		EAB13DC97949DC607EEFAD11 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6D679B173A2FC089269966FA /* Pods-LovePeaceHarmony.debug.xcconfig */,
-				1FE947B96407BB07915B8DF4 /* Pods-LovePeaceHarmony.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -520,11 +521,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F3D8BCE1FB1CC2B008E0D82 /* Build configuration list for PBXNativeTarget "LovePeaceHarmony" */;
 			buildPhases = (
-				43105347EB4B623577DA342C /* [CP] Check Pods Manifest.lock */,
+				F3CA66AA57E30123C38F56F1 /* [CP] Check Pods Manifest.lock */,
 				6F3D8BB51FB1CC2B008E0D82 /* Sources */,
 				6F3D8BB61FB1CC2B008E0D82 /* Frameworks */,
 				6F3D8BB71FB1CC2B008E0D82 /* Resources */,
-				5634D9FE2E21EB41F1347069 /* [CP] Embed Pods Frameworks */,
+				1B41AD78536A782D1C619058 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -619,25 +620,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		43105347EB4B623577DA342C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LovePeaceHarmony-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5634D9FE2E21EB41F1347069 /* [CP] Embed Pods Frameworks */ = {
+		1B41AD78536A782D1C619058 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -646,17 +629,22 @@
 				"${PODS_ROOT}/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/AppCheckCore/AppCheckCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseAuthInterop/FirebaseAuthInterop.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseDatabase/FirebaseDatabase.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseDynamicLinks/FirebaseDynamicLinks.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseMessaging/FirebaseMessaging.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
@@ -665,6 +653,7 @@
 				"${BUILT_PRODUCTS_DIR}/KCFloatingActionButton/KCFloatingActionButton.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialShowcase/MaterialShowcase.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/RecaptchaInterop/RecaptchaInterop.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -676,17 +665,22 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppCheckCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAppCheckInterop.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAuthInterop.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseDatabase.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseDynamicLinks.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseMessaging.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSharedSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
@@ -695,6 +689,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KCFloatingActionButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialShowcase.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RecaptchaInterop.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -705,6 +700,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3CA66AA57E30123C38F56F1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LovePeaceHarmony-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -931,7 +948,7 @@
 		};
 		6F3D8BCF1FB1CC2B008E0D82 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D679B173A2FC089269966FA /* Pods-LovePeaceHarmony.debug.xcconfig */;
+			baseConfigurationReference = 4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -956,7 +973,7 @@
 		};
 		6F3D8BD01FB1CC2B008E0D82 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FE947B96407BB07915B8DF4 /* Pods-LovePeaceHarmony.release.xcconfig */;
+			baseConfigurationReference = 09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;

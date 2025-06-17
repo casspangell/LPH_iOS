@@ -298,7 +298,7 @@ open class KCFloatingActionButton: UIView {
     /**
         Items close.
     */
-    @objc open func close() {
+    open func close() {
         if(items.count > 0){
             self.overlayView.removeTarget(self, action: #selector(close), for: UIControlEvents.touchUpInside)
             UIView.animate(withDuration: 0.3, delay: 0,
@@ -676,7 +676,7 @@ open class KCFloatingActionButton: UIView {
         }
     }
 
-    @objc internal func deviceOrientationDidChange(_ notification: Notification) {
+    internal func deviceOrientationDidChange(_ notification: Notification) {
         guard let keyboardSize: CGFloat = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
             return
         }
@@ -691,7 +691,7 @@ open class KCFloatingActionButton: UIView {
         }
     }
 
-    @objc internal func keyboardWillShow(_ notification: Notification) {
+    internal func keyboardWillShow(_ notification: Notification) {
         guard let keyboardSize: CGFloat = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size.height else {
             return
         }
@@ -716,7 +716,7 @@ open class KCFloatingActionButton: UIView {
             }, completion: nil)
     }
 
-    @objc internal func keyboardWillHide(_ notification: Notification) {
+    internal func keyboardWillHide(_ notification: Notification) {
         
         if sticky == true {
             return

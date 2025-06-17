@@ -22,7 +22,7 @@
 #import <UIKit/UIKit.h>
 
 #ifdef FIRDynamicLinks3P
-#import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
+#import "FirebaseCore/Extension/FirebaseCoreInternal.h"
 #import "FirebaseDynamicLinks/Sources/FIRDLScionLogging.h"
 #import "Interop/Analytics/Public/FIRAnalyticsInterop.h"
 #else
@@ -110,9 +110,6 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
 }
 
 + (nonnull NSArray<FIRComponent *> *)componentsToRegister {
-  // Product requirement is enforced by CocoaPod. Not technical requirement for analytics.
-  FIRDependency *analyticsDep = [FIRDependency dependencyWithProtocol:@protocol(FIRAnalyticsInterop)
-                                                           isRequired:NO];
   FIRComponentCreationBlock creationBlock =
       ^id _Nullable(FIRComponentContainer *container, BOOL *isCacheable) {
     // Don't return an instance when it's not the default app.
@@ -129,8 +126,7 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
     id<FIRAnalyticsInterop> analytics = FIR_COMPONENT(FIRAnalyticsInterop, container);
     FIRDynamicLinks *dynamicLinks = [[FIRDynamicLinks alloc] initWithAnalytics:analytics];
     [dynamicLinks configureDynamicLinks:container.app];
-    // Check for pending Dynamic Link automatically if enabled, otherwise we expect the developer to
-    // call strong match FDL API to retrieve a pending link.
+
     if ([FIRDynamicLinks isAutomaticRetrievalEnabled]) {
       [dynamicLinks checkForPendingDynamicLink];
     }
@@ -139,7 +135,6 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
   FIRComponent *dynamicLinksProvider =
       [FIRComponent componentWithProtocol:@protocol(FIRDynamicLinksInstanceProvider)
                       instantiationTiming:FIRInstantiationTimingEagerInDefaultApp
-                             dependencies:@[ analyticsDep ]
                             creationBlock:creationBlock];
 
   return @[ dynamicLinksProvider ];
@@ -171,30 +166,15 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
                             userInfo:errorDict];
   }
   if (error) {
-    NSString *message = nil;
-    if (options.usingOptionsFromDefaultPlist) {
-      // Configured using plist file
-      message = [NSString
-          stringWithFormat:
-              @"Firebase Dynamic Links has stopped your project "
-              @"because there are missing or incorrect values provided in %@.%@ that may "
-              @"prevent your app from behaving as expected:\n\n"
-              @"Error: %@\n\n"
-              @"Please fix these issues to ensure that Firebase is correctly configured in "
-              @"your project.",
-              kServiceInfoFileName, kServiceInfoFileType, error.localizedFailureReason];
-    } else {
-      // Configured manually
-      message = [NSString
-          stringWithFormat:
-              @"Firebase Dynamic Links has stopped your project "
-              @"because there are incorrect values provided in Firebase's configuration "
-              @"options that may prevent your app from behaving as expected:\n\n"
-              @"Error: %@\n\n"
-              @"Please fix these issues to ensure that Firebase is correctly configured in "
-              @"your project.",
-              error.localizedFailureReason];
-    }
+    NSString *message =
+        [NSString stringWithFormat:
+                      @"Firebase Dynamic Links has stopped your project "
+                      @"because there are incorrect values provided in Firebase's configuration "
+                      @"options that may prevent your app from behaving as expected:\n\n"
+                      @"Error: %@\n\n"
+                      @"Please fix these issues to ensure that Firebase is correctly configured in "
+                      @"your project.",
+                      error.localizedFailureReason];
     [NSException raise:kFirebaseDurableDeepLinkErrorDomain format:@"%@", message];
   }
   [self checkForCustomDomainEntriesInInfoPlist];
@@ -367,7 +347,7 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
   }
 
   if ([url.path isEqualToString:@"/link"] && [url.host isEqualToString:@"google"]) {
-    // This URL is a callback url from a fingerprint match
+    // This URL is a callback url from a device heuristics based match
     // Extract information from query.
     NSString *query = url.query;
 
@@ -413,15 +393,43 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
 
   if ([self canParseUniversalLinkURL:url]) {
     if (url.query.length > 0) {
-      NSDictionary *parameters = FIRDLDictionaryFromQuery(url.query);
+      NSDictionary<NSString *, NSString *> *parameters = FIRDLDictionaryFromQuery(url.query);
       if (parameters[kFIRDLParameterLink]) {
-        FIRDynamicLink *dynamicLink = [[FIRDynamicLink alloc] init];
         NSString *urlString = parameters[kFIRDLParameterLink];
         NSURL *deepLinkURL = [NSURL URLWithString:urlString];
         if (deepLinkURL) {
-          dynamicLink.url = deepLinkURL;
+          NSMutableDictionary *paramsDictionary = [[NSMutableDictionary alloc]
+              initWithDictionary:@{kFIRDLParameterDeepLinkIdentifier : urlString}];
+
+          if (parameters[kFIRDLParameterSource] != nil) {
+            [paramsDictionary setValue:parameters[kFIRDLParameterSource]
+                                forKey:kFIRDLParameterSource];
+          }
+
+          if (parameters[kFIRDLParameterMedium] != nil) {
+            [paramsDictionary setValue:parameters[kFIRDLParameterMedium]
+                                forKey:kFIRDLParameterMedium];
+          }
+
+          if (parameters[kFIRDLParameterTerm] != nil) {
+            [paramsDictionary setValue:parameters[kFIRDLParameterTerm] forKey:kFIRDLParameterTerm];
+          }
+
+          if (parameters[kFIRDLParameterCampaign] != nil) {
+            [paramsDictionary setValue:parameters[kFIRDLParameterCampaign]
+                                forKey:(kFIRDLParameterCampaign)];
+          }
+
+          if (parameters[kFIRDLParameterContent] != nil) {
+            [paramsDictionary setValue:parameters[kFIRDLParameterContent]
+                                forKey:kFIRDLParameterContent];
+          }
+
+          FIRDynamicLink *dynamicLink =
+              [[FIRDynamicLink alloc] initWithParametersDictionary:paramsDictionary];
           dynamicLink.matchType = FIRDLMatchTypeUnique;
           dynamicLink.minimumAppVersion = parameters[kFIRDLParameterMinimumAppVersion];
+
           // Call resolveShortLink:completion: to do logging.
           // TODO: Create dedicated logging function to prevent this.
           [self.dynamicLinkNetworking
@@ -440,7 +448,14 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
       }
     }
   }
-  mainQueueCompletion(nil, nil);
+
+  mainQueueCompletion(
+      nil, [[NSError alloc] initWithDomain:@"com.firebase.dynamicLinks"
+                                      code:1
+                                  userInfo:@{
+                                    NSLocalizedFailureReasonErrorKey :
+                                        @"Universal link URL could not be parsed by Dynamic Links."
+                                  }]);
   return nil;
 }
 
@@ -550,9 +565,6 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
                                              errorDescription:(NSString *)errorDescription
                                               underlyingError:(nullable NSError *)underlyingError {
   self.retrievingPendingDynamicLink = NO;
-
-  // TODO (b/38035270) inform caller why we failed, for App developer it is hard to debug
-  // stuff like this without having source code access
 }
 
 #pragma mark - FIRDLRetrievalProcessDelegate
@@ -578,7 +590,6 @@ static const NSInteger FIRErrorCodeDurableDeepLinkFailed = -119;
 
 static NSString *kSelfDiagnoseOutputHeader =
     @"---- Firebase Dynamic Links diagnostic output start ----\n";
-// TODO (b/38397557) Add link to the "Debug FDL" documentation when docs is published
 static NSString *kSelfDiagnoseOutputFooter =
     @"---- Firebase Dynamic Links diagnostic output end ----\n";
 
@@ -668,7 +679,7 @@ static NSString *kSelfDiagnoseOutputFooter =
   NSDictionary *plistMap = (NSDictionary *)plistData;
 
   // analyze entitlements and print diagnostic information
-  // we can't detect erorrs, information p[rinted here may hint developer or will help support
+  // we can't detect errors, information p[rinted here may hint developer or will help support
   // to identify the issue
   NSMutableString *outputString = [[NSMutableString alloc] init];
 

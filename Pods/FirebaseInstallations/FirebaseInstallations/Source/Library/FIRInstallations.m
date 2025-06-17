@@ -22,7 +22,7 @@
 #import "FBLPromises.h"
 #endif
 
-#import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
+#import "FirebaseCore/Extension/FirebaseCoreInternal.h"
 
 #import "FirebaseInstallations/Source/Library/FIRInstallationsAuthTokenResultInternal.h"
 
@@ -66,32 +66,22 @@ static const NSUInteger kExpectedAPIKeyLength = 39;
   FIRComponent *installationsProvider =
       [FIRComponent componentWithProtocol:@protocol(FIRInstallationsInstanceProvider)
                       instantiationTiming:FIRInstantiationTimingAlwaysEager
-                             dependencies:@[]
                             creationBlock:creationBlock];
   return @[ installationsProvider ];
 }
 
 - (instancetype)initWithApp:(FIRApp *)app {
-  return [self initWitAppOptions:app.options appName:app.name];
-}
-
-- (instancetype)initWitAppOptions:(FIROptions *)appOptions appName:(NSString *)appName {
   FIRInstallationsIDController *IDController =
-      [[FIRInstallationsIDController alloc] initWithGoogleAppID:appOptions.googleAppID
-                                                        appName:appName
-                                                         APIKey:appOptions.APIKey
-                                                      projectID:appOptions.projectID
-                                                    GCMSenderID:appOptions.GCMSenderID
-                                                    accessGroup:appOptions.appGroupID];
+      [[FIRInstallationsIDController alloc] initWithApp:app];
 
   // `prefetchAuthToken` is disabled due to b/156746574.
-  return [self initWithAppOptions:appOptions
-                          appName:appName
+  return [self initWithAppOptions:app.options
+                          appName:app.name
         installationsIDController:IDController
                 prefetchAuthToken:NO];
 }
 
-/// The initializer is supposed to be used by tests to inject `installationsStore`.
+/// This designated initializer can be exposed for testing.
 - (instancetype)initWithAppOptions:(FIROptions *)appOptions
                            appName:(NSString *)appName
          installationsIDController:(FIRInstallationsIDController *)installationsIDController
@@ -275,6 +265,18 @@ static const NSUInteger kExpectedAPIKeyLength = 39;
   // We expect a compatible version having the method `+[FIRInstanceID usesFIS]` defined.
   BOOL isCompatibleVersion = [IIDClass respondsToSelector:NSSelectorFromString(@"usesFIS")];
   return isCompatibleVersion;
+}
+
+#pragma mark - Force Category Linking
+
+extern void FIRInclude_FIRInstallationsItem_RegisterInstallationAPI_Category(void);
+
+/// Does nothing when called, and not meant to be called.
+///
+/// This method forces the linker to include categories even if
+/// users do not include the '-ObjC' linker flag in their project.
++ (void)noop {
+  FIRInclude_FIRInstallationsItem_RegisterInstallationAPI_Category();
 }
 
 @end
