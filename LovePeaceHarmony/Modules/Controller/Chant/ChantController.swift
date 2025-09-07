@@ -8,7 +8,6 @@
 
 import UIKit
 import XLPagerTabStrip
-import MaterialShowcase
 
 class ChantController: ButtonBarPagerTabStripViewController, MaterialShowcaseDelegate {
 

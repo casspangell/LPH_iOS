@@ -6,9 +6,8 @@
 //  Copyright © 2017 LovePeaceHarmony. All rights reserved.
 //
 
-#ifndef LovePeaceHarmony_Bridging_Header_h
-#define LovePeaceHarmony_Bridging_Header_h
-#import <GoogleSignin/GoogleSignIn.h>
-
-
-#endif /* LovePeaceHarmony_Bridging_Header_h */
+//#ifndef LovePeaceHarmony_Bridging_Header_h
+//#define LovePeaceHarmony_Bridging_Header_h
+//
+//
+//#endif /* LovePeaceHarmony_Bridging_Header_h */

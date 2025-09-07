@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -86,17 +86,19 @@
 		899F282E2DE90D100050ED35 /* ChantTimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F282D2DE90D100050ED35 /* ChantTimeTracker.swift */; };
 		899F28302DE914850050ED35 /* LoadingSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F282F2DE914850050ED35 /* LoadingSpinner.swift */; };
 		899F28352DE914920050ED35 /* TabPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899F28322DE914920050ED35 /* TabPagerViewController.swift */; };
+		89A1E1842E6E157B000C1F71 /* XLPagerTabStrip in Frameworks */ = {isa = PBXBuildFile; productRef = 89A1E1832E6E157B000C1F71 /* XLPagerTabStrip */; };
+		89A1E1872E6E15A8000C1F71 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 89A1E1862E6E15A8000C1F71 /* Lottie */; };
+		89A1E1892E6E15A8000C1F71 /* Lottie-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 89A1E1882E6E15A8000C1F71 /* Lottie-Dynamic */; };
+		89A1E18B2E6E15C9000C1F71 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 89A1E18A2E6E15C9000C1F71 /* FirebaseCore */; };
+		89A1E18D2E6E15D7000C1F71 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 89A1E18C2E6E15D7000C1F71 /* FirebaseAuth */; };
 		89DAE0012DE421A600E39F0F /* LPHActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DADFFF2DE421A600E39F0F /* LPHActionButton.swift */; };
 		9754A5DE2C0CD75500B1904D /* ChantMilestoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DD2C0CD75400B1904D /* ChantMilestoneManager.swift */; };
 		9754A5E02C0CDB1700B1904D /* AVAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */; };
 		9754A5E22C0CE31F00B1904D /* ChantNowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9754A5E12C0CE31F00B1904D /* ChantNowManager.swift */; };
 		97A2FC3A2C0BD348006F3212 /* ChantUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2FC392C0BD348006F3212 /* ChantUtils.swift */; };
-		B3399CF0A854745DF16C928E /* Pods_LovePeaceHarmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.release.xcconfig"; path = "Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.release.xcconfig"; sourceTree = "<group>"; };
-		4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePeaceHarmony.debug.xcconfig"; path = "Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony.debug.xcconfig"; sourceTree = "<group>"; };
 		5018584B25FFEFEA005BF009 /* APIUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUtilities.swift; sourceTree = "<group>"; };
 		50327B61251CE06E002B34C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5053014E259D9EE600C61E82 /* french.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = french.mp3; sourceTree = "<group>"; };
@@ -199,7 +201,6 @@
 		9754A5DF2C0CDB1600B1904D /* AVAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioManager.swift; sourceTree = "<group>"; };
 		9754A5E12C0CE31F00B1904D /* ChantNowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantNowManager.swift; sourceTree = "<group>"; };
 		97A2FC392C0BD348006F3212 /* ChantUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChantUtils.swift; sourceTree = "<group>"; };
-		FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LovePeaceHarmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,7 +209,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FCEBB931FE7A560003D7238 /* UserNotifications.framework in Frameworks */,
-				B3399CF0A854745DF16C928E /* Pods_LovePeaceHarmony.framework in Frameworks */,
+				89A1E18D2E6E15D7000C1F71 /* FirebaseAuth in Frameworks */,
+				89A1E18B2E6E15C9000C1F71 /* FirebaseCore in Frameworks */,
+				89A1E1892E6E15A8000C1F71 /* Lottie-Dynamic in Frameworks */,
+				89A1E1842E6E157B000C1F71 /* XLPagerTabStrip in Frameworks */,
+				89A1E1872E6E15A8000C1F71 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,10 +223,7 @@
 		41666BBCE23FD48D9D8EBBCD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */,
-				09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -509,7 +511,6 @@
 			isa = PBXGroup;
 			children = (
 				6FCEBB921FE7A560003D7238 /* UserNotifications.framework */,
-				FA172F46B9AD1047064861A4 /* Pods_LovePeaceHarmony.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -521,11 +522,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F3D8BCE1FB1CC2B008E0D82 /* Build configuration list for PBXNativeTarget "LovePeaceHarmony" */;
 			buildPhases = (
-				F3CA66AA57E30123C38F56F1 /* [CP] Check Pods Manifest.lock */,
 				6F3D8BB51FB1CC2B008E0D82 /* Sources */,
 				6F3D8BB61FB1CC2B008E0D82 /* Frameworks */,
 				6F3D8BB71FB1CC2B008E0D82 /* Resources */,
-				1B41AD78536A782D1C619058 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -576,6 +575,12 @@
 				nl,
 			);
 			mainGroup = 6F3D8BB01FB1CC2B008E0D82;
+			packageReferences = (
+				89A1E1782E6E13DF000C1F71 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				89A1E17D2E6E140F000C1F71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				89A1E1822E6E157B000C1F71 /* XCRemoteSwiftPackageReference "XLPagerTabStrip" */,
+				89A1E1852E6E15A8000C1F71 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 6F3D8BBA1FB1CC2B008E0D82 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -618,113 +623,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1B41AD78536A782D1C619058 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/AppCheckCore/AppCheckCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseAuthInterop/FirebaseAuthInterop.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseDatabase/FirebaseDatabase.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseDynamicLinks/FirebaseDynamicLinks.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseMessaging/FirebaseMessaging.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleSignIn/GoogleSignIn.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/KCFloatingActionButton/KCFloatingActionButton.framework",
-				"${BUILT_PRODUCTS_DIR}/MaterialShowcase/MaterialShowcase.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
-				"${BUILT_PRODUCTS_DIR}/RecaptchaInterop/RecaptchaInterop.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppCheckCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAppCheckInterop.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseAuthInterop.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseDatabase.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseDynamicLinks.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseMessaging.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSharedSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleSignIn.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KCFloatingActionButton.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialShowcase.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RecaptchaInterop.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LovePeaceHarmony/Pods-LovePeaceHarmony-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F3CA66AA57E30123C38F56F1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LovePeaceHarmony-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6F3D8BB51FB1CC2B008E0D82 /* Sources */ = {
@@ -941,14 +839,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		6F3D8BCF1FB1CC2B008E0D82 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F4AC37352C09EF36D92A9DE /* Pods-LovePeaceHarmony.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -959,12 +857,14 @@
 				DEVELOPMENT_TEAM = KTW53JUNM8;
 				INFOPLIST_FILE = LovePeaceHarmony/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.lovepeaceharmony.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "LovePeaceHarmony/Modules/Utils/LovePeaceHarmony-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -973,7 +873,6 @@
 		};
 		6F3D8BD01FB1CC2B008E0D82 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09A5EF39C0626E1218E1E310 /* Pods-LovePeaceHarmony.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -984,12 +883,14 @@
 				DEVELOPMENT_TEAM = KTW53JUNM8;
 				INFOPLIST_FILE = LovePeaceHarmony/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.lovepeaceharmony.ios.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "LovePeaceHarmony/Modules/Utils/LovePeaceHarmony-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1018,6 +919,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		89A1E1782E6E13DF000C1F71 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		89A1E17D2E6E140F000C1F71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.2.0;
+			};
+		};
+		89A1E1822E6E157B000C1F71 /* XCRemoteSwiftPackageReference "XLPagerTabStrip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/xmartlabs/XLPagerTabStrip";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+		89A1E1852E6E15A8000C1F71 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		89A1E1832E6E157B000C1F71 /* XLPagerTabStrip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89A1E1822E6E157B000C1F71 /* XCRemoteSwiftPackageReference "XLPagerTabStrip" */;
+			productName = XLPagerTabStrip;
+		};
+		89A1E1862E6E15A8000C1F71 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89A1E1852E6E15A8000C1F71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		89A1E1882E6E15A8000C1F71 /* Lottie-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89A1E1852E6E15A8000C1F71 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = "Lottie-Dynamic";
+		};
+		89A1E18A2E6E15C9000C1F71 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89A1E17D2E6E140F000C1F71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		89A1E18C2E6E15D7000C1F71 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89A1E17D2E6E140F000C1F71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		6FDFDBF3201EE9CD00D1FBB7 /* LovePeaceHarmony.xcdatamodeld */ = {
