@@ -63,3 +63,6 @@ fastlane/test_output
 id_rsa*
 id_rsa*
 id_rsa*
+mackey
+mackey.pub
+master
